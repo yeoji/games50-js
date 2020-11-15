@@ -18,15 +18,20 @@ class PlayScene extends Phaser.Scene {
         const mapWidth = 20;
         const mapHeight = 20;
 
+        this.ground = this.physics.add.staticGroup();
         for (let row = 0; row < mapHeight; row++) {
             for (let col = 0; col < mapWidth; col++) {
-                if(row < 5) {
+                if(row < 6) {
                     this.add.sprite(col * 16, row * 16, "tiles", SKY);
                 } else {
-                    this.add.sprite(col * 16, row * 16, "tiles", GROUND);
+                    const tile = this.add.sprite(col * 16, row * 16, "tiles", GROUND);
+                    this.ground.add(tile);
                 }
             }
         }
+
+        this.player = this.physics.add.sprite(this.game.config.width/2, 0, "character", 0);
+        this.physics.add.collider(this.player, this.ground);
     }
 
     update() {
