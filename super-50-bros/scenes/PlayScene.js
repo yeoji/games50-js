@@ -1,9 +1,8 @@
 import Phaser from 'phaser';
+import Player from '../objects/Player';
 
 const GROUND = 0;
 const SKY = 1;
-
-const PLAYER_MOVE_SPEED = 50;
 
 class PlayScene extends Phaser.Scene {
     constructor() {
@@ -21,7 +20,7 @@ class PlayScene extends Phaser.Scene {
         this.ground = this.physics.add.staticGroup();
         for (let row = 0; row < mapHeight; row++) {
             for (let col = 0; col < mapWidth; col++) {
-                if(row < 6) {
+                if(row < 7) {
                     this.add.sprite(col * 16, row * 16, "tiles", SKY);
                 } else {
                     const tile = this.add.sprite(col * 16, row * 16, "tiles", GROUND);
@@ -30,19 +29,25 @@ class PlayScene extends Phaser.Scene {
             }
         }
 
-        this.player = this.physics.add.sprite(this.game.config.width/2, 0, "character", 0);
+        this.player = new Player(this);
+        
         this.physics.add.collider(this.player, this.ground);
 
         this.cameras.main.startFollow(this.player, true);
     }
 
     update() {
+        if(Phaser.Input.Keyboard.JustDown(this.controls.space) && this.player.body.touching.down) {
+            this.player.jump();
+            return;
+        }
+
         if(this.controls.left.isDown) {
-            this.player.setVelocityX(-PLAYER_MOVE_SPEED);
+            this.player.moveLeft();
         } else if(this.controls.right.isDown) {
-            this.player.setVelocityX(PLAYER_MOVE_SPEED);
+            this.player.moveRight();
         } else {
-            this.player.setVelocityX(0);
+            this.player.stop();
         }
     }
 }
