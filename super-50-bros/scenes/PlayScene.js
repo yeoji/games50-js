@@ -3,12 +3,15 @@ import Phaser from 'phaser';
 const GROUND = 0;
 const SKY = 1;
 
+const CAMERA_SCROLL_SPEED = 1;
+
 class PlayScene extends Phaser.Scene {
     constructor() {
         super('PlayScene');
     }
 
     preload() {
+        this.controls = this.input.keyboard.createCursorKeys();
     }
 
     create() {
@@ -24,7 +27,14 @@ class PlayScene extends Phaser.Scene {
                 }
             }
         }
+    }
 
+    update() {
+        if(this.controls.left.isDown) {
+            this.cameras.main.scrollX -= CAMERA_SCROLL_SPEED;
+        } else if(this.controls.right.isDown) {
+            this.cameras.main.scrollX += CAMERA_SCROLL_SPEED;
+        }
     }
 }
 
