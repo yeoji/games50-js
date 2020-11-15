@@ -1,0 +1,16 @@
+{
+  "name": "games50-js",
+  "version": "1.0.0",
+  "author": "yeoji",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "dev": "parcel $GAME/index.html $GAME/assets/**/*"
+  },
+  "dependencies": {
+    "phaser": "3.24.1"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  }
+}
