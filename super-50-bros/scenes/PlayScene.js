@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 const GROUND = 0;
 const SKY = 1;
 
-const CAMERA_SCROLL_SPEED = 1;
+const PLAYER_MOVE_SPEED = 50;
 
 class PlayScene extends Phaser.Scene {
     constructor() {
@@ -32,13 +32,17 @@ class PlayScene extends Phaser.Scene {
 
         this.player = this.physics.add.sprite(this.game.config.width/2, 0, "character", 0);
         this.physics.add.collider(this.player, this.ground);
+
+        this.cameras.main.startFollow(this.player, true);
     }
 
     update() {
         if(this.controls.left.isDown) {
-            this.cameras.main.scrollX -= CAMERA_SCROLL_SPEED;
+            this.player.setVelocityX(-PLAYER_MOVE_SPEED);
         } else if(this.controls.right.isDown) {
-            this.cameras.main.scrollX += CAMERA_SCROLL_SPEED;
+            this.player.setVelocityX(PLAYER_MOVE_SPEED);
+        } else {
+            this.player.setVelocityX(0);
         }
     }
 }
