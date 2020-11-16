@@ -63,6 +63,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.anims.play("idle")
         }
     }
+
+    isFalling() {
+        return this.body.velocity.y > 0;
+    }
 }
 
 export default Player;
