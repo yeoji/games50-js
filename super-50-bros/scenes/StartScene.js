@@ -9,8 +9,12 @@ class StartScene extends Phaser.Scene {
         this.game.config.backgroundColor.random();
 
         this.load.spritesheet("tiles", "assets/graphics/tiles.png", {
-            frameWidth: 16,
-            frameHeight: 16
+            frameWidth: 80,
+            frameHeight: 64
+        })
+        this.load.spritesheet("tileTops", "assets/graphics/tile_tops.png", {
+            frameWidth: 80,
+            frameHeight: 64
         })
         this.load.spritesheet("character", "assets/graphics/character.png", {
             frameWidth: 16,
@@ -18,7 +22,27 @@ class StartScene extends Phaser.Scene {
         })
     }
 
+    loadRandomTileset() {
+        const randomTileset = Phaser.Math.Between(0, 59);
+        this.textures.addSpriteSheetFromAtlas("tileset", {
+            atlas: "tiles",
+            frame: randomTileset,
+            frameWidth: 16,
+            frameHeight: 16
+        })
+        
+        const randomTileTopSet = Phaser.Math.Between(0, 107);
+        this.textures.addSpriteSheetFromAtlas("topperset", {
+            atlas: "tileTops",
+            frame: randomTileTopSet,
+            frameWidth: 16,
+            frameHeight: 16
+        })
+    }
+
     create() {
+        this.loadRandomTileset();
+
         this.anims.create({
             key: "idle",
             frames: [{ key: 'character', frame: 0 }],

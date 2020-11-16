@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 import Player from '../objects/Player';
 
-const GROUND = 0;
-const SKY = 1;
+const GROUND = 2;
+const SKY = 4;
 
 class PlayScene extends Phaser.Scene {
     constructor() {
@@ -21,10 +21,14 @@ class PlayScene extends Phaser.Scene {
         for (let row = 0; row < mapHeight; row++) {
             for (let col = 0; col < mapWidth; col++) {
                 if(row < 7) {
-                    this.add.sprite(col * 16, row * 16, "tiles", SKY);
+                    this.add.sprite(col * 16, row * 16, "tileset", SKY);
                 } else {
-                    const tile = this.add.sprite(col * 16, row * 16, "tiles", GROUND);
+                    const tile = this.add.sprite(col * 16, row * 16, "tileset", GROUND);
                     this.ground.add(tile);
+                
+                    if (row === 7) {
+                        this.add.sprite(col * 16, row * 16, "topperset", GROUND);
+                    } 
                 }
             }
         }
