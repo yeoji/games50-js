@@ -22,18 +22,32 @@ const generateLevel = (mapWidth, mapHeight) => {
             const skyHeight = spawnPillar ? 5 : 7;
 
             if(row < skyHeight) {
-                tiles[col][row] = {
+                tiles[col][row] = [{
                     id: SKY,
-                    hasTopper: false
-                };
+                    texture: 'tileset'
+                }];
+
+                if(row === (skyHeight - 1)) {
+                    // random 10% chance to spawn decorative bush
+                    const spawnBush = Phaser.Math.Between(1, 10) === 1;
+                    if(spawnBush) {
+                        tiles[col][row] = [{
+                            id: Phaser.Math.Between(0, 34),
+                            texture: 'bushes'
+                        }];
+                    }
+                }
             } else {
-                tiles[col][row] = {
+                tiles[col][row] = [{
                     id: GROUND,
-                    hasTopper: false
-                };
+                    texture: 'tileset'
+                }];
             
                 if (row === skyHeight) {
-                    tiles[col][row].hasTopper = true;
+                    tiles[col][row].push({
+                        id: GROUND,
+                        texture: 'topperset'
+                    });
                 } 
             }
         }

@@ -4,6 +4,9 @@ import Snail from './Snail';
 
 const SKY = 4;
 
+const TILE_WIDTH = 16;
+const BACKGROUND_WIDTH = 256;
+
 class Level extends Phaser.GameObjects.Container {
     constructor(scene, tiles) {
         super(scene);
@@ -17,10 +20,14 @@ class Level extends Phaser.GameObjects.Container {
 
     createBackground() {
         const randomBackground = Phaser.Math.Between(0, 2);
-        this.add(new Phaser.GameObjects.Sprite(this.scene, this.scene.game.config.width/2, this.scene.game.config.height/2 - 10, "backgrounds", randomBackground));
-        this.add(new Phaser.GameObjects.Sprite(this.scene, this.scene.game.config.width/2, this.scene.game.config.height/2 + 118, "backgrounds", randomBackground).setFlipY(true));
-        this.add(new Phaser.GameObjects.Sprite(this.scene, this.scene.game.config.width/2 + 256, this.scene.game.config.height/2 - 10, "backgrounds", randomBackground));
-        this.add(new Phaser.GameObjects.Sprite(this.scene, this.scene.game.config.width/2 + 256, this.scene.game.config.height/2 + 118, "backgrounds", randomBackground).setFlipY(true));
+        const mapWidth = this.tiles.length * TILE_WIDTH;
+
+        for(let i=0; i < mapWidth/BACKGROUND_WIDTH; i++) {
+            const bgOffset = i * BACKGROUND_WIDTH;
+
+            this.add(new Phaser.GameObjects.Sprite(this.scene, this.scene.game.config.width/2 + bgOffset, this.scene.game.config.height/2 - 10, "backgrounds", randomBackground));
+            this.add(new Phaser.GameObjects.Sprite(this.scene, this.scene.game.config.width/2 + bgOffset, this.scene.game.config.height/2 + 118, "backgrounds", randomBackground).setFlipY(true));
+        }
     }
 
     createMap() {
@@ -29,18 +36,16 @@ class Level extends Phaser.GameObjects.Container {
         for (let col = 0; col < this.tiles.length; col++) {
             for (let row = 0; row < this.tiles[col].length; row++) {
                 const tile = this.tiles[col][row];
-                
-                if(tile.id === GROUND_TILE_ID) {
-                    const object = new Ground(this.scene, col * 16, row * 16);
-                    this.add(object);
-                    this.ground.add(object);
-                } else {
-                    this.add(new Phaser.GameObjects.Sprite(this.scene, col * 16, row * 16, "tileset", tile.id));
-                }
 
-                if(tile.hasTopper) {
-                    this.add(new Phaser.GameObjects.Sprite(this.scene, col * 16, row * 16, "topperset", tile.id));
-                }
+                tile.forEach(t => {
+                    if(t.texture === 'tileset' && t.id === GROUND_TILE_ID) {
+                        const object = new Ground(this.scene, col * 16, row * 16);
+                        this.add(object);
+                        this.ground.add(object);
+                    } else {
+                        this.add(new Phaser.GameObjects.Sprite(this.scene, col * 16, row * 16, t.texture, t.id));
+                    }
+                })
             }
         }
     }

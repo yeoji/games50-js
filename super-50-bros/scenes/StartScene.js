@@ -31,6 +31,10 @@ class StartScene extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 16,
         })
+        this.load.spritesheet("bushes", "assets/graphics/bushes_and_cacti.png", {
+            frameWidth: 16,
+            frameHeight: 16,
+        })
 
         loadFont("title", "assets/fonts/arcade_alternate/ArcadeAlternate.ttf");
         loadFont("text", "assets/fonts/font.ttf");

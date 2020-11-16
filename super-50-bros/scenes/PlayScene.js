@@ -16,8 +16,8 @@ class PlayScene extends Phaser.Scene {
     }
 
     create() {
-        const mapWidth = 20;
-        const mapHeight = 20;
+        const mapWidth = 100;
+        const mapHeight = 10;
         this.cameras.main.setBounds(0, 0, mapWidth * 15, 144);
         this.physics.world.setBounds(0, 0, mapWidth * 15, 144);
 
