@@ -1,4 +1,7 @@
 import Phaser from 'phaser';
+import Level from '../objects/Level';
+import {loadFont} from '../utils';
+import {generateLevel} from '../levelMaker';
 
 class StartScene extends Phaser.Scene {
     constructor() {
@@ -20,6 +23,9 @@ class StartScene extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 20
         })
+
+        loadFont("title", "assets/fonts/arcade_alternate/ArcadeAlternate.ttf");
+        loadFont("text", "assets/fonts/font.ttf");
     }
 
     loadRandomTileset() {
@@ -60,7 +66,47 @@ class StartScene extends Phaser.Scene {
             frameRate: 20
         })
 
-        this.scene.start("PlayScene");
+        this.drawBackground();
+        this.drawTitle();
+        this.drawStartGameText();
+
+        this.input.keyboard.on('keydown-ENTER', () => {
+            this.scene.start("PlayScene");
+        })
+    }
+
+    drawTitle() {
+        this.add.text(16, 36, "Super 50 Bros.", {
+            fontFamily: 'title',
+            fill: '#000',
+            fontSize: 32,
+            resolution: 10
+        })
+        this.add.text(15, 35, "Super 50 Bros.", {
+            fontFamily: 'title',
+            fill: '#fff',
+            fontSize: 32,
+            resolution: 10
+        })
+    }
+
+    drawStartGameText() {
+        this.add.text(76, 86, "Press Enter", {
+            fontFamily: 'text',
+            fill: '#000',
+            fontSize: 16,
+            resolution: 10
+        })
+        this.add.text(75, 85, "Press Enter", {
+            fontFamily: 'text',
+            fill: '#fff',
+            fontSize: 16,
+            resolution: 10
+        })
+    }
+
+    drawBackground() {
+        new Level(this, generateLevel(20, 20));
     }
 }
 

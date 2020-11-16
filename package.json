@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf dist",
-    "dev": "parcel $GAME/index.html $GAME/assets/**/*"
+    "watch": "parcel $GAME/index.html",
+    "copy:assets": "mkdir -p dist/assets && cp -r $GAME/assets dist",
+    "dev": "yarn copy:assets && yarn watch"
   },
   "dependencies": {
     "phaser": "3.24.1"

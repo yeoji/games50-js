@@ -1,8 +1,7 @@
 import Phaser from 'phaser';
+import Level from '../objects/Level';
 import Player from '../objects/Player';
-
-const GROUND = 2;
-const SKY = 4;
+import {generateLevel} from '../levelMaker';
 
 class PlayScene extends Phaser.Scene {
     constructor() {
@@ -14,43 +13,11 @@ class PlayScene extends Phaser.Scene {
     }
 
     create() {
-        this.generateLevel();
+        this.level = new Level(this, generateLevel(20, 20));
 
         this.player = new Player(this);
-        this.physics.add.collider(this.player, this.ground);
+        this.physics.add.collider(this.player, this.level.getGround());
         this.cameras.main.startFollow(this.player, true);
-    }
-
-    generateLevel() {
-        const mapWidth = 20;
-        const mapHeight = 20;
-
-        this.ground = this.physics.add.staticGroup();
-        for (let col = 0; col < mapWidth; col++) {
-            // random 10% chance to spawn a chasm
-            const spawnChasm = Phaser.Math.Between(1, 10) === 1;
-            if(spawnChasm) {
-                continue
-            }
-
-            // random 10% chance to spawn a pillar
-            const spawnPillar = Phaser.Math.Between(1, 10) === 1;
-
-            for (let row = 0; row < mapHeight; row++) {
-                const skyHeight = spawnPillar ? 5 : 7;
-
-                if(row < skyHeight) {
-                    this.add.sprite(col * 16, row * 16, "tileset", SKY);
-                } else {
-                    const tile = this.add.sprite(col * 16, row * 16, "tileset", GROUND);
-                    this.ground.add(tile);
-                
-                    if (row === skyHeight) {
-                        this.add.sprite(col * 16, row * 16, "topperset", GROUND);
-                    } 
-                }
-            }
-        }
     }
 
     update() {
