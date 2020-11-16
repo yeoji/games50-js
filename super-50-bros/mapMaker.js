@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 const GROUND = 2;
 const SKY = 4;
 
-const generateLevel = (mapWidth, mapHeight) => {
+const generateMap = (mapWidth, mapHeight) => {
     let tiles = [];
 
     for (let col = 0; col < mapWidth; col++) {
@@ -56,5 +56,5 @@ const generateLevel = (mapWidth, mapHeight) => {
 }
 
 export {
-    generateLevel
+    generateMap
 }

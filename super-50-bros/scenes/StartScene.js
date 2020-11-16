@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import Level from '../objects/Level';
 import {loadFont} from '../utils';
-import {generateLevel} from '../levelMaker';
+import {generateMap} from '../mapMaker';
 
 class StartScene extends Phaser.Scene {
     constructor() {
@@ -32,6 +32,10 @@ class StartScene extends Phaser.Scene {
             frameHeight: 16,
         })
         this.load.spritesheet("bushes", "assets/graphics/bushes_and_cacti.png", {
+            frameWidth: 16,
+            frameHeight: 16,
+        })
+        this.load.spritesheet("jumpBlocks", "assets/graphics/jump_blocks.png", {
             frameWidth: 16,
             frameHeight: 16,
         })
@@ -101,7 +105,7 @@ class StartScene extends Phaser.Scene {
     }
 
     drawBackground() {
-        new Level(this, generateLevel(20, 20));
+        new Level(this, generateMap(20, 20));
     }
 }
 

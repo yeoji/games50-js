@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import Ground, {GROUND_TILE_ID} from './Ground';
+import JumpBlock from './JumpBlock';
 import Snail from './Snail';
 
 const SKY = 4;
@@ -14,6 +15,7 @@ class Level extends Phaser.GameObjects.Container {
         this.tiles = tiles;
         this.createBackground();
         this.createMap();
+        this.createJumpBlocks();
 
         scene.add.existing(this);
     }
@@ -50,15 +52,40 @@ class Level extends Phaser.GameObjects.Container {
         }
     }
 
+    createJumpBlocks() {
+        this.blocks = this.scene.physics.add.staticGroup();
+
+        for (let col = 0; col < this.tiles.length; col++) {
+            const groundRow = 0;
+            for (let row = 0; row < this.tiles[col].length; row++) {
+                if(this.tiles[col][row][0].id === GROUND_TILE_ID) {
+                    groundRow = row;
+                    break;
+                }
+            }
+            if(groundRow === 0) {
+                return
+            }
+
+            // random 10% chance for jump block to spawn
+            const spawnBlock = col > 2 && Phaser.Math.Between(1, 10) === 1;
+            if(spawnBlock) {
+                const block = new JumpBlock(this.scene, col * 16, (groundRow - 3) * 16);
+                this.add(block);
+                this.blocks.add(block);
+            }
+        }
+    }
+
     spawnEnemies() {
         this.enemies = this.scene.physics.add.group();
 
         for (let col = 0; col < this.tiles.length; col++) {
             for (let row = 0; row < this.tiles[col].length; row++) {
-                const tile = this.tiles[col][row];
+                const tile = this.tiles[col][row][0];
                 const nextTile = this.tiles[col][row + 1];
 
-                const onGround = (tile.id === SKY) && (nextTile && nextTile.id === GROUND_TILE_ID);
+                const onGround = (tile.id === SKY) && (nextTile && nextTile[0].id === GROUND_TILE_ID);
                 
                 // random 5% chance for enemy to spawn
                 const spawnEnemy = Phaser.Math.Between(1, 20) === 1;
@@ -80,6 +107,10 @@ class Level extends Phaser.GameObjects.Container {
 
     getGround() {
         return this.ground;
+    }
+
+    getBlocks() {
+        return this.blocks;
     }
 
     getEnemies() {

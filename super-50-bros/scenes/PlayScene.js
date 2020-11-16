@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import Level from '../objects/Level';
 import Player from '../objects/Player';
-import {generateLevel} from '../levelMaker';
+import {generateMap} from '../mapMaker';
 
 class PlayScene extends Phaser.Scene {
     constructor() {
@@ -21,11 +21,12 @@ class PlayScene extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, mapWidth * 15, 144);
         this.physics.world.setBounds(0, 0, mapWidth * 15, 144);
 
-        this.level = new Level(this, generateLevel(mapWidth, mapHeight));
+        this.level = new Level(this, generateMap(mapWidth, mapHeight));
         this.level.spawnEnemies();
 
         this.player = new Player(this);
         this.physics.add.collider(this.player, this.level.getGround());
+        this.physics.add.collider(this.player, this.level.getBlocks());
         this.physics.add.collider(this.player, this.level.getEnemies(), this.handleEnemyCollide, null, this);
         this.cameras.main.startFollow(this.player, true);
     }
