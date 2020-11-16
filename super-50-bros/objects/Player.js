@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 const MOVE_SPEED = 50;
-const JUMP_VELOCITY = -160;
+const JUMP_VELOCITY = -180;
 
 class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene) {

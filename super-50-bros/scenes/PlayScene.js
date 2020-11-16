@@ -9,6 +9,8 @@ class PlayScene extends Phaser.Scene {
 
         this.score = 0;
         this.scoreText = [];
+
+        this.gems = [];
     }
 
     preload() {
@@ -26,7 +28,7 @@ class PlayScene extends Phaser.Scene {
 
         this.player = new Player(this);
         this.physics.add.collider(this.player, this.level.getGround());
-        this.physics.add.collider(this.player, this.level.getBlocks());
+        this.physics.add.collider(this.player, this.level.getBlocks(), this.handleJumpBlockCollide, null, this);
         this.physics.add.collider(this.player, this.level.getEnemies(), this.handleEnemyCollide, null, this);
         this.cameras.main.startFollow(this.player, true);
     }
@@ -56,6 +58,7 @@ class PlayScene extends Phaser.Scene {
     update() {
         this.drawScore();
         this.level.update(this.player);
+        this.gems.forEach(gem => this.checkIfGemIsConsumed(this.player, gem));
 
         if(Phaser.Input.Keyboard.JustDown(this.controls.space) && this.player.body.touching.down) {
             this.player.jump();
@@ -78,6 +81,26 @@ class PlayScene extends Phaser.Scene {
             this.score += 100;
         } else {
             this.scene.start("StartScene");
+        }
+    }
+
+    handleJumpBlockCollide(player, block) {
+        if(player.body.touching.up) {
+            const gem = block.activate();
+
+            if(gem) {
+                this.gems.push(gem);
+            }
+        }
+    }
+
+    checkIfGemIsConsumed(player, gem) {
+        if(Phaser.Geom.Rectangle.Overlaps(player.getBounds(), gem.getBounds())) {
+            gem.destroy();
+            this.score += 500;
+
+            const gemIndex = this.gems.indexOf(gem);
+            this.gems = [...this.gems.slice(0, gemIndex), ...this.gems.slice(gemIndex+1)]
         }
     }
 }
