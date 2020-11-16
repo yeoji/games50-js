@@ -19,13 +19,17 @@ class PlayScene extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, mapWidth * 15, 144);
 
         this.level = new Level(this, generateLevel(mapWidth, mapHeight));
+        this.level.spawnEnemies();
 
         this.player = new Player(this);
         this.physics.add.collider(this.player, this.level.getGround());
+        this.physics.add.collider(this.player, this.level.getEnemies(), this.endGame, null, this);
         this.cameras.main.startFollow(this.player, true);
     }
 
     update() {
+        this.level.update(this.player);
+
         if(Phaser.Input.Keyboard.JustDown(this.controls.space) && this.player.body.touching.down) {
             this.player.jump();
             return;
@@ -38,6 +42,10 @@ class PlayScene extends Phaser.Scene {
         } else {
             this.player.stop();
         }
+    }
+
+    endGame() {
+        this.scene.start("StartScene");
     }
 }
 

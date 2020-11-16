@@ -27,6 +27,10 @@ class StartScene extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 20
         })
+        this.load.spritesheet("creatures", "assets/graphics/creatures.png", {
+            frameWidth: 16,
+            frameHeight: 16,
+        })
 
         loadFont("title", "assets/fonts/arcade_alternate/ArcadeAlternate.ttf");
         loadFont("text", "assets/fonts/font.ttf");
@@ -52,23 +56,6 @@ class StartScene extends Phaser.Scene {
 
     create() {
         this.loadRandomTileset();
-
-        this.anims.create({
-            key: "idle",
-            frames: [{ key: 'character', frame: 0 }],
-            frameRate: 20
-        })
-        this.anims.create({
-            key: "moving",
-            frames: this.anims.generateFrameNumbers('character', { start: 9, end: 10 }),
-            frameRate: 10,
-            repeat: -1
-        })
-        this.anims.create({
-            key: "jumping",
-            frames: [{ key: 'character', frame: 2 }],
-            frameRate: 20
-        })
 
         this.drawBackground();
         this.drawTitle();

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 const MOVE_SPEED = 50;
-const JUMP_VELOCITY = -150;
+const JUMP_VELOCITY = -160;
 
 class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene) {
@@ -10,7 +10,27 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
+        this.createAnimations();
         this.setCollideWorldBounds();
+    }
+
+    createAnimations() {
+        this.scene.anims.create({
+            key: "idle",
+            frames: [{ key: 'character', frame: 0 }],
+            frameRate: 20
+        })
+        this.scene.anims.create({
+            key: "moving",
+            frames: this.scene.anims.generateFrameNumbers('character', { start: 9, end: 10 }),
+            frameRate: 10,
+            repeat: -1
+        })
+        this.scene.anims.create({
+            key: "jumping",
+            frames: [{ key: 'character', frame: 2 }],
+            frameRate: 20
+        })
     }
 
     moveLeft() {
