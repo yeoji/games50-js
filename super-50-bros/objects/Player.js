@@ -5,10 +5,12 @@ const JUMP_VELOCITY = -150;
 
 class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene) {
-        super(scene, scene.game.config.width/2, 0, "character");
+        super(scene, 10, scene.game.config.height/2, "character");
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
+
+        this.setCollideWorldBounds();
     }
 
     moveLeft() {

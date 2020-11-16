@@ -13,7 +13,12 @@ class PlayScene extends Phaser.Scene {
     }
 
     create() {
-        this.level = new Level(this, generateLevel(20, 20));
+        const mapWidth = 20;
+        const mapHeight = 20;
+        this.cameras.main.setBounds(0, 0, mapWidth * 15, mapHeight * 15);
+        this.physics.world.setBounds(0, 0, mapWidth * 15, mapHeight * 15);
+
+        this.level = new Level(this, generateLevel(mapWidth, mapHeight));
 
         this.player = new Player(this);
         this.physics.add.collider(this.player, this.level.getGround());
