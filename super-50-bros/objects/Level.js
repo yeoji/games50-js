@@ -5,8 +5,18 @@ class Level extends Phaser.GameObjects.Container {
     constructor(scene, tiles) {
         super(scene);
 
+        this.createBackground();
         this.createMap(tiles);
+
         scene.add.existing(this);
+    }
+
+    createBackground() {
+        const randomBackground = Phaser.Math.Between(0, 2);
+        this.add(new Phaser.GameObjects.Sprite(this.scene, this.scene.game.config.width/2, this.scene.game.config.height/2 - 10, "backgrounds", randomBackground));
+        this.add(new Phaser.GameObjects.Sprite(this.scene, this.scene.game.config.width/2, this.scene.game.config.height/2 + 118, "backgrounds", randomBackground).setFlipY(true));
+        this.add(new Phaser.GameObjects.Sprite(this.scene, this.scene.game.config.width/2 + 256, this.scene.game.config.height/2 - 10, "backgrounds", randomBackground));
+        this.add(new Phaser.GameObjects.Sprite(this.scene, this.scene.game.config.width/2 + 256, this.scene.game.config.height/2 + 118, "backgrounds", randomBackground).setFlipY(true));
     }
 
     createMap(tiles) {

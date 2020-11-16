@@ -11,6 +11,10 @@ class StartScene extends Phaser.Scene {
     preload() {
         this.game.config.backgroundColor.random();
 
+        this.load.spritesheet("backgrounds", "assets/graphics/backgrounds.png", {
+            frameWidth: 256,
+            frameHeight: 128
+        })
         this.load.spritesheet("tiles", "assets/graphics/tiles.png", {
             frameWidth: 80,
             frameHeight: 64
