@@ -15,6 +15,8 @@ class JumpBlock extends Phaser.GameObjects.Sprite {
 
     activate() {
         if(this.hasGem) {
+            this.scene.sound.play("powerupReveal");
+
             const gem = new Gem(this.scene, this.x, this.y);
             this.scene.add.existing(gem);
             this.scene.tweens.create({
@@ -26,6 +28,8 @@ class JumpBlock extends Phaser.GameObjects.Sprite {
 
             this.hasGem = false;
             return gem;
+        } else {
+            this.scene.sound.play("emptyBlock");
         }
         return null;
     }

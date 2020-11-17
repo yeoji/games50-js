@@ -11,6 +11,14 @@ class StartScene extends Phaser.Scene {
     preload() {
         this.game.config.backgroundColor.random();
 
+        this.loadGraphics();
+        this.loadSounds();
+
+        loadFont("title", "assets/fonts/arcade_alternate/ArcadeAlternate.ttf");
+        loadFont("text", "assets/fonts/font.ttf");
+    }
+
+    loadGraphics() {
         this.load.spritesheet("backgrounds", "assets/graphics/backgrounds.png", {
             frameWidth: 256,
             frameHeight: 128
@@ -43,9 +51,17 @@ class StartScene extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 16,
         })
+    }
 
-        loadFont("title", "assets/fonts/arcade_alternate/ArcadeAlternate.ttf");
-        loadFont("text", "assets/fonts/font.ttf");
+    loadSounds() {
+        this.load.audio("music", "assets/sounds/music.wav")
+        this.load.audio("pickup", "assets/sounds/pickup.wav")
+        this.load.audio("jump", "assets/sounds/jump.wav")
+        this.load.audio("kill", "assets/sounds/kill.wav")
+        this.load.audio("kill2", "assets/sounds/kill2.wav")
+        this.load.audio("death", "assets/sounds/death.wav")
+        this.load.audio("powerupReveal", "assets/sounds/powerup-reveal.wav")
+        this.load.audio("emptyBlock", "assets/sounds/empty-block.wav")
     }
 
     loadRandomTileset() {
@@ -73,6 +89,13 @@ class StartScene extends Phaser.Scene {
     }
 
     create() {
+        if(!this.sound.get("music") || !this.sound.get("music").isPlaying) {
+            this.sound.play("music", {
+                sound: 0.5,
+                loop: true
+            });
+        }
+
         this.loadRandomTileset();
 
         this.drawBackground();

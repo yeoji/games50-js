@@ -62,7 +62,7 @@ class PlayScene extends Phaser.Scene {
         this.gems.forEach(gem => this.checkIfGemIsConsumed(this.player, gem));
 
         if(!Phaser.Geom.Rectangle.Overlaps(this.player.getBounds(), this.physics.world.bounds)) {
-            this.scene.start("StartScene");
+            this.endGame();
             return;
         }
 
@@ -83,10 +83,12 @@ class PlayScene extends Phaser.Scene {
     handleEnemyCollide(player, enemy) {
         if(player.isFalling()) {
             // player killed enemy by jumping on it, add to score
+            this.sound.play("kill");
+            this.sound.play("kill2");
             enemy.destroy();
             this.score += 100;
         } else {
-            this.scene.start("StartScene");
+            this.endGame();
         }
     }
 
@@ -102,12 +104,19 @@ class PlayScene extends Phaser.Scene {
 
     checkIfGemIsConsumed(player, gem) {
         if(Phaser.Geom.Rectangle.Overlaps(player.getBounds(), gem.getBounds())) {
+            this.sound.play("pickup");
+
             gem.destroy();
             this.score += 500;
 
             const gemIndex = this.gems.indexOf(gem);
             this.gems = [...this.gems.slice(0, gemIndex), ...this.gems.slice(gemIndex+1)]
         }
+    }
+
+    endGame() {
+        this.sound.play("death");
+        this.scene.start("StartScene");
     }
 }
 
