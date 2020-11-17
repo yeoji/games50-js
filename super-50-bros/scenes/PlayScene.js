@@ -21,7 +21,8 @@ class PlayScene extends Phaser.Scene {
         const mapWidth = 100;
         const mapHeight = 10;
         this.cameras.main.setBounds(0, 0, mapWidth * 15, 144);
-        this.physics.world.setBounds(0, 0, mapWidth * 15, 144);
+        this.physics.world.setBounds(0, 0, mapWidth * 15, 144, true, true, true, false);
+        this.physics.world.setBoundsCollision(true, true, true, false);
 
         this.level = new Level(this, generateMap(mapWidth, mapHeight));
         this.level.spawnEnemies();
@@ -59,6 +60,11 @@ class PlayScene extends Phaser.Scene {
         this.drawScore();
         this.level.update(this.player);
         this.gems.forEach(gem => this.checkIfGemIsConsumed(this.player, gem));
+
+        if(!Phaser.Geom.Rectangle.Overlaps(this.player.getBounds(), this.physics.world.bounds)) {
+            this.scene.start("StartScene");
+            return;
+        }
 
         if(Phaser.Input.Keyboard.JustDown(this.controls.space) && this.player.body.touching.down) {
             this.player.jump();

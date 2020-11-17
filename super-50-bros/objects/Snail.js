@@ -14,7 +14,6 @@ class Snail extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         this.createAnimations();
-        this.setCollideWorldBounds();
 
         this.anims.play("snailSleeping", true);
     }

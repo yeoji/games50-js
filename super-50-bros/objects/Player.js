@@ -11,7 +11,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
 
         this.createAnimations();
-        this.setCollideWorldBounds();
     }
 
     createAnimations() {

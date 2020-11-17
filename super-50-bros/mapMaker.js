@@ -5,13 +5,19 @@ const SKY = 4;
 
 const generateMap = (mapWidth, mapHeight) => {
     let tiles = [];
+    let chasmCounter = 0;
 
     for (let col = 0; col < mapWidth; col++) {
         tiles[col] = [];
 
-        // random 10% chance to spawn a chasm
+        // random 10% chance to spawn a chasm (chasm has to be 2 blocks wide)
         const spawnChasm = col > 2 && Phaser.Math.Between(1, 10) === 1;
-        if(spawnChasm) {
+        if(spawnChasm || chasmCounter === 1) {
+            chasmCounter++;
+
+            if(chasmCounter === 2) {
+                chasmCounter = 0;
+            }
             continue
         }
 

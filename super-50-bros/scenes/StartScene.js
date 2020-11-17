@@ -50,6 +50,9 @@ class StartScene extends Phaser.Scene {
 
     loadRandomTileset() {
         const randomTileset = Phaser.Math.Between(0, 59);
+        if(this.textures.get("tileset")) {
+            this.textures.remove("tileset");
+        }
         this.textures.addSpriteSheetFromAtlas("tileset", {
             atlas: "tiles",
             frame: randomTileset,
@@ -58,6 +61,9 @@ class StartScene extends Phaser.Scene {
         })
         
         const randomTileTopSet = Phaser.Math.Between(0, 107);
+        if(this.textures.get("topperset")) {
+            this.textures.remove("topperset");
+        }
         this.textures.addSpriteSheetFromAtlas("topperset", {
             atlas: "tileTops",
             frame: randomTileTopSet,
