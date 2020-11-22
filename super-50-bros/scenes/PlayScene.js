@@ -33,6 +33,7 @@ class PlayScene extends Phaser.Scene {
 
         this.level = new Level(this, generateMap(this.mapWidth, this.mapHeight));
         this.level.spawnEnemies();
+        this.drawLevelNo();
 
         this.player = new Player(this);
         this.physics.add.collider(this.player, this.level.getGround());
@@ -62,6 +63,24 @@ class PlayScene extends Phaser.Scene {
         text.setScrollFactor(0);
 
         this.scoreText = [text, shadow];
+    }
+
+    drawLevelNo() {
+        const shadow = this.add.text(101, 1, `Level ${this.levelNo}`, {
+            fontFamily: 'text',
+            fill: '#000',
+            fontSize: 16,
+            resolution: 10,
+        })
+        const text = this.add.text(100, 0, `Level ${this.levelNo}`, {
+            fontFamily: 'text',
+            fill: '#fff',
+            fontSize: 16,
+            resolution: 10
+        });
+
+        shadow.setScrollFactor(0);
+        text.setScrollFactor(0);
     }
 
     update() {
