@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "parcel index.html",
-    "build": "yarn clean && parcel build index.html",
+    "build": "yarn clean && parcel build index.html --no-source-maps",
     "deploy": "cp CNAME ./dist && gh-pages -d dist"
   },
   "staticFiles": {
