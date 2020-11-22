@@ -6,16 +6,23 @@
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "parcel index.html",
-    "build": "parcel build index.html",
+    "build": "yarn clean && parcel build index.html",
     "deploy": "cp CNAME ./dist && gh-pages -d dist"
   },
   "staticFiles": {
     "staticPath": [
       {
+        "staticPath": "assets",
+        "staticOutDir": "assets"
+      },
+      {
         "staticPath": "super-50-bros/assets",
         "staticOutDir": "super-50-bros/assets"
       }
     ]
+  },
+  "externals": {
+    "assets/**/*": false
   },
   "dependencies": {
     "phaser": "3.24.1"
@@ -23,6 +30,7 @@
   "devDependencies": {
     "gh-pages": "^3.1.0",
     "parcel-bundler": "^1.12.4",
+    "parcel-plugin-html-externals": "^0.2.0",
     "parcel-plugin-static-files-copy": "^2.5.0"
   }
 }
