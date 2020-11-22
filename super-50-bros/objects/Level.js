@@ -1,6 +1,9 @@
 import Phaser from 'phaser';
+import GoalPost from './GoalPost';
 import Ground, {GROUND_TILE_ID} from './Ground';
 import JumpBlock from './JumpBlock';
+import Key from './Key';
+import LockedBlock from './LockedBlock';
 import Snail from './Snail';
 
 const SKY = 4;
@@ -13,9 +16,11 @@ class Level extends Phaser.GameObjects.Container {
         super(scene);
 
         this.tiles = tiles;
+        this.keySpawned = false;
+
         this.createBackground();
         this.createMap();
-        this.createJumpBlocks();
+        this.createBlocks();
 
         scene.add.existing(this);
     }
@@ -52,10 +57,10 @@ class Level extends Phaser.GameObjects.Container {
         }
     }
 
-    createJumpBlocks() {
+    createBlocks() {
         this.blocks = this.scene.physics.add.staticGroup();
 
-        for (let col = 0; col < this.tiles.length; col++) {
+        for (let col = 0; col < this.tiles.length - 2; col++) {
             const groundRow = 0;
             for (let row = 0; row < this.tiles[col].length; row++) {
                 if(this.tiles[col][row][0].id === GROUND_TILE_ID) {
@@ -64,13 +69,27 @@ class Level extends Phaser.GameObjects.Container {
                 }
             }
             if(groundRow === 0) {
-                return
+                continue
             }
 
             // random 10% chance for jump block to spawn
+            let block = null;
             const spawnBlock = col > 2 && Phaser.Math.Between(1, 10) === 1;
+            const spawnKeyAndLock =  !this.keySpawned && ((col > 2 && Phaser.Math.Between(1, 10) === 1) || (col > this.tiles.length - 10))
             if(spawnBlock) {
-                const block = new JumpBlock(this.scene, col * 16, (groundRow - 3) * 16);
+                block = new JumpBlock(this.scene, col * 16, (groundRow - 3) * 16);
+            } else if(spawnKeyAndLock) {
+                block = new LockedBlock(this.scene, col * 16, (groundRow - 3) * 16);
+
+                const key = new Key(this.scene, col * 16, (groundRow  - 1) * 16);
+                this.add(key);
+                this.key = key;
+                this.scene.physics.add.collider(this.key, this.ground);
+
+                this.keySpawned = true;
+            }
+
+            if(block) {
                 this.add(block);
                 this.blocks.add(block);
             }
@@ -101,6 +120,20 @@ class Level extends Phaser.GameObjects.Container {
         this.scene.physics.add.collider(this.enemies, this.ground);
     }
 
+    spawnGoalPost() {
+        const mapWidth = this.tiles.length;
+        let groundRow = 0;
+        for (let row = 0; row < this.tiles[mapWidth - 2].length; row++) {
+            if(this.tiles[mapWidth - 2][row][0].id === GROUND_TILE_ID) {
+                groundRow = row;
+                break;
+            }
+        }
+
+        this.goalPost = new GoalPost(this.scene, (mapWidth - 2) * 16, (groundRow * 16) - 32);
+        return this.goalPost;
+    }
+
     update(player) {
         this.enemies.getChildren().forEach(enemy => enemy.goAfterPlayer(player));
     }
@@ -111,6 +144,10 @@ class Level extends Phaser.GameObjects.Container {
 
     getBlocks() {
         return this.blocks;
+    }
+
+    getKey() {
+        return this.key;
     }
 
     getEnemies() {

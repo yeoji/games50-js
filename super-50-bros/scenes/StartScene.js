@@ -51,6 +51,18 @@ class StartScene extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 16,
         })
+        this.load.spritesheet("keysAndLocks", "assets/graphics/keys_and_locks.png", {
+            frameWidth: 16,
+            frameHeight: 16
+        })
+        this.load.spritesheet("flagPoles", "assets/graphics/flags.png", {
+            frameWidth: 16,
+            frameHeight: 48
+        })
+        this.load.spritesheet("flags", "assets/graphics/flags.png", {
+            frameWidth: 16,
+            frameHeight: 16
+        })
     }
 
     loadSounds() {
@@ -69,6 +81,7 @@ class StartScene extends Phaser.Scene {
         if(this.textures.get("tileset")) {
             this.textures.remove("tileset");
         }
+        console.log('random tileset: ' + randomTileset)
         this.textures.addSpriteSheetFromAtlas("tileset", {
             atlas: "tiles",
             frame: randomTileset,
@@ -77,6 +90,7 @@ class StartScene extends Phaser.Scene {
         })
         
         const randomTileTopSet = Phaser.Math.Between(0, 107);
+        console.log('random tiletopset: ' + randomTileTopSet)
         if(this.textures.get("topperset")) {
             this.textures.remove("topperset");
         }
@@ -103,7 +117,9 @@ class StartScene extends Phaser.Scene {
         this.drawStartGameText();
 
         this.input.keyboard.on('keydown-ENTER', () => {
-            this.scene.start("PlayScene");
+            this.scene.start("PlayScene", {
+                level: 1
+            });
         })
     }
 

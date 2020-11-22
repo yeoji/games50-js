@@ -2,15 +2,24 @@ import Phaser from 'phaser';
 import Level from '../objects/Level';
 import Player from '../objects/Player';
 import {generateMap} from '../mapMaker';
+import JumpBlock from '../objects/JumpBlock';
+import LockedBlock from '../objects/LockedBlock';
 
 class PlayScene extends Phaser.Scene {
     constructor() {
         super('PlayScene');
+    }
 
-        this.score = 0;
+    init(data) {
+        this.levelNo = data.level;
+        this.score = data.score || 0;
         this.scoreText = [];
 
         this.gems = [];
+        this.levelUnlocked = false;
+
+        this.mapWidth = 100 + ((data.level - 1) * 10);
+        this.mapHeight = 10;
     }
 
     preload() {
@@ -18,19 +27,18 @@ class PlayScene extends Phaser.Scene {
     }
 
     create() {
-        const mapWidth = 100;
-        const mapHeight = 10;
-        this.cameras.main.setBounds(0, 0, mapWidth * 15, 144);
-        this.physics.world.setBounds(0, 0, mapWidth * 15, 144, true, true, true, false);
+        this.cameras.main.setBounds(0, 0, this.mapWidth * 16, 144);
+        this.physics.world.setBounds(0, 0, this.mapWidth * 16, 144, true, true, true, false);
         this.physics.world.setBoundsCollision(true, true, true, false);
 
-        this.level = new Level(this, generateMap(mapWidth, mapHeight));
+        this.level = new Level(this, generateMap(this.mapWidth, this.mapHeight));
         this.level.spawnEnemies();
 
         this.player = new Player(this);
         this.physics.add.collider(this.player, this.level.getGround());
-        this.physics.add.collider(this.player, this.level.getBlocks(), this.handleJumpBlockCollide, null, this);
+        this.physics.add.collider(this.player, this.level.getBlocks(), this.handleBlockCollide, null, this);
         this.physics.add.collider(this.player, this.level.getEnemies(), this.handleEnemyCollide, null, this);
+        this.physics.add.overlap(this.player, this.level.getKey(), this.handleUnlockLevel, null, this);
         this.cameras.main.startFollow(this.player, true);
     }
 
@@ -60,6 +68,9 @@ class PlayScene extends Phaser.Scene {
         this.drawScore();
         this.level.update(this.player);
         this.gems.forEach(gem => this.checkIfGemIsConsumed(this.player, gem));
+        if(this.goalPost) {
+            this.checkIfGoalPostReached(this.player, this.goalPost);
+        }
 
         if(!Phaser.Geom.Rectangle.Overlaps(this.player.getBounds(), this.physics.world.bounds)) {
             this.endGame();
@@ -92,14 +103,27 @@ class PlayScene extends Phaser.Scene {
         }
     }
 
-    handleJumpBlockCollide(player, block) {
+    handleBlockCollide(player, block) {
         if(player.body.touching.up) {
-            const gem = block.activate();
+            if(block instanceof JumpBlock) {
+                const gem = block.activate();
+                if(gem) {
+                    this.gems.push(gem);
+                }
+            } else if(block instanceof LockedBlock) {
+                if(this.levelUnlocked) {
+                    block.destroy();
 
-            if(gem) {
-                this.gems.push(gem);
+                    // spawn goal post
+                    this.goalPost = this.level.spawnGoalPost();
+                }
             }
         }
+    }
+
+    handleUnlockLevel(player, key) {
+        this.levelUnlocked = true;
+        key.destroy();
     }
 
     checkIfGemIsConsumed(player, gem) {
@@ -111,6 +135,15 @@ class PlayScene extends Phaser.Scene {
 
             const gemIndex = this.gems.indexOf(gem);
             this.gems = [...this.gems.slice(0, gemIndex), ...this.gems.slice(gemIndex+1)]
+        }
+    }
+
+    checkIfGoalPostReached(player, goalPost) {
+        if(Phaser.Geom.Rectangle.Overlaps(player.getBounds(), goalPost.getBounds())) {
+            this.scene.start("PlayScene", {
+                level: this.levelNo + 1,
+                score: this.score
+            })
         }
     }
 

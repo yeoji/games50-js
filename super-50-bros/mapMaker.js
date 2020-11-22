@@ -11,18 +11,17 @@ const generateMap = (mapWidth, mapHeight) => {
         tiles[col] = [];
 
         // random 10% chance to spawn a chasm (chasm has to be 2 blocks wide)
-        const spawnChasm = col > 2 && Phaser.Math.Between(1, 10) === 1;
+        const spawnChasm = col > 2 && col < mapWidth - 2 && Phaser.Math.Between(1, 10) === 1 && chasmCounter != 2;
+        if(chasmCounter == 2) {
+            chasmCounter = 0;
+        }
         if(spawnChasm || chasmCounter === 1) {
             chasmCounter++;
-
-            if(chasmCounter === 2) {
-                chasmCounter = 0;
-            }
             continue
         }
 
         // random 10% chance to spawn a pillar
-        const spawnPillar = col > 2 && Phaser.Math.Between(1, 10) === 1;
+        const spawnPillar = col > 2 && col < mapWidth - 2 && Phaser.Math.Between(1, 10) === 1;
 
         for (let row = 0; row < mapHeight; row++) {
             const skyHeight = spawnPillar ? 5 : 7;
