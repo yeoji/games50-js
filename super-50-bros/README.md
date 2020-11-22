@@ -7,3 +7,15 @@ The Games50 Super Mario Bros game remade with Phaser.
 ```
 GAME=super-50-bros yarn dev
 ```
+
+### Play the Game
+
+**Controls**
+
+`Space` - Jump
+
+`Left/Right` - Move
+
+### Assets
+
+- Games50 coursework
