@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import Level from '../objects/Level';
-import {loadFont} from '../utils';
+import {loadFont} from '../../common/utils';
 import {generateMap} from '../mapMaker';
 
 class StartScene extends Phaser.Scene {

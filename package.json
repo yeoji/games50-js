@@ -18,6 +18,10 @@
       {
         "staticPath": "super-50-bros/assets",
         "staticOutDir": "super-50-bros/assets"
+      },
+      {
+        "staticPath": "legend-of-50/assets",
+        "staticOutDir": "legend-of-50/assets"
       }
     ]
   },
