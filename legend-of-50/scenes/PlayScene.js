@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import Dungeon from '../objects/Dungeon';
 
 class PlayScene extends Phaser.Scene {
     constructor() {
@@ -6,11 +7,10 @@ class PlayScene extends Phaser.Scene {
     }
 
     init() {
-
+        this.dungeon = new Dungeon(this);
     }
 
     preload() {
-        
     }
 
     create() {
