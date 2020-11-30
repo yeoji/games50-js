@@ -2,10 +2,10 @@ import Phaser from 'phaser';
 import Room from './Room';
 
 class Dungeon extends Phaser.GameObjects.Container {
-    constructor(scene) {
+    constructor(scene, player) {
         super(scene);
 
-        this.currentRoom = new Room(scene);
+        this.currentRoom = new Room(scene, player);
     }
 }
 

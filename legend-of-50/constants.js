@@ -37,3 +37,12 @@ export const MAP_HEIGHT = Math.floor(GAME_HEIGHT / TILE_HEIGHT) - 2;
 
 export const MAP_RENDER_OFFSET_X = (GAME_WIDTH - (MAP_WIDTH * TILE_WIDTH)) / 2
 export const MAP_RENDER_OFFSET_Y = (GAME_HEIGHT - (MAP_HEIGHT * TILE_HEIGHT)) / 2
+
+/**
+ * Direction constants
+ */
+
+ export const LEFT = 'left';
+ export const RIGHT = 'right';
+ export const UP = 'up';
+ export const DOWN = 'down';

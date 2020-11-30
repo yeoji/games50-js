@@ -7,13 +7,16 @@ import {
 } from '../constants';
 
 class Room extends Phaser.GameObjects.Container {
-    constructor(scene) {
+    constructor(scene, player) {
         super(scene);
 
         this.width = MAP_WIDTH;
         this.height = MAP_HEIGHT;
 
         this.generateFloorAndWalls();
+
+        this.player = player;
+        this.scene.add.existing(player);
     }
 
     generateFloorAndWalls = () => {

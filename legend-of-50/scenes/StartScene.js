@@ -13,6 +13,14 @@ class StartScene extends Phaser.Scene {
             frameWidth: TILE_WIDTH,
             frameHeight: TILE_HEIGHT
         });
+        this.load.spritesheet("character", "assets/graphics/character_walk.png", {
+            frameWidth: 16,
+            frameHeight: 32,
+        });
+        this.load.spritesheet("character-attack", "assets/graphics/character_swing_sword.png", {
+            frameWidth: 32,
+            frameHeight: 32,
+        });
 
         loadFont("zelda", "assets/fonts/zelda.otf");
     }
