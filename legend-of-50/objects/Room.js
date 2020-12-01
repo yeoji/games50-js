@@ -3,8 +3,10 @@ import {
     MAP_WIDTH, MAP_HEIGHT, 
     TILE_TOP_LEFT_CORNER, TILE_BOTTOM_LEFT_CORNER, TILE_TOP_RIGHT_CORNER, TILE_BOTTOM_RIGHT_CORNER, 
     TILE_WIDTH, TILE_HEIGHT, MAP_RENDER_OFFSET_X, MAP_RENDER_OFFSET_Y, 
-    TILE_LEFT_WALLS, TILE_RIGHT_WALLS, TILE_TOP_WALLS, TILE_BOTTOM_WALLS, TILE_FLOORS
+    TILE_LEFT_WALLS, TILE_RIGHT_WALLS, TILE_TOP_WALLS, TILE_BOTTOM_WALLS, TILE_FLOORS, LEFT, RIGHT, UP, DOWN, PLAYER_PADDING_BOTTOM
 } from '../constants';
+import Doorway from './Doorway';
+import Switch from './Switch';
 
 class Room extends Phaser.GameObjects.Container {
     constructor(scene, player) {
@@ -14,9 +16,11 @@ class Room extends Phaser.GameObjects.Container {
         this.height = MAP_HEIGHT;
 
         this.generateFloorAndWalls();
+        this.createDoorways();
 
+        this.switch = new Switch(scene);
         this.player = player;
-        this.scene.add.existing(player);
+        this.setupPlayer();
     }
 
     generateFloorAndWalls = () => {
@@ -59,6 +63,31 @@ class Room extends Phaser.GameObjects.Container {
                 this.scene.add.sprite(xLoc, yLoc, "tiles", TILE_FLOORS[Phaser.Math.Between(0, TILE_FLOORS.length - 1)]).setOrigin(0,0);
             }
         }
+    }
+    
+    createDoorways = () => {
+        this.doorways = [
+            new Doorway(this.scene, LEFT),
+            new Doorway(this.scene, RIGHT),
+            new Doorway(this.scene, UP),
+            new Doorway(this.scene, DOWN),
+        ]
+    }
+
+    setupPlayer = () => {
+        this.scene.add.existing(this.player);
+        this.scene.physics.add.overlap(this.player, this.switch, (player, switchObj) => {
+            const playerFeet = {
+                x: player.body.x + player.body.halfWidth, 
+                y: player.body.y + player.body.height - PLAYER_PADDING_BOTTOM
+            };
+
+            if(Phaser.Geom.Rectangle.Contains(switchObj.getBounds(), playerFeet.x, playerFeet.y)) {
+                switchObj.activate();
+
+                this.doorways.forEach(doorway => doorway.open());
+            }
+        }, null, this);
     }
 }
 

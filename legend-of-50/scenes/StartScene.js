@@ -21,6 +21,10 @@ class StartScene extends Phaser.Scene {
             frameWidth: 32,
             frameHeight: 32,
         });
+        this.load.spritesheet("switches", "assets/graphics/switches.png", {
+            frameWidth: 16,
+            frameHeight: 18
+        });
 
         loadFont("zelda", "assets/fonts/zelda.otf");
     }

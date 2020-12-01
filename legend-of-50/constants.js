@@ -28,6 +28,15 @@ export const TILE_BOTTOM_WALLS = [78, 79, 80]
 export const TILE_LEFT_WALLS = [76, 95, 114]
 export const TILE_RIGHT_WALLS = [77, 96, 115]
 
+export const DOOR_TOP_CLOSED = [133, 134, 152, 153];
+export const DOOR_TOP_OPEN = [97, 98, 116, 117];
+export const DOOR_BOTTOM_CLOSED = [215, 216, 234, 235];
+export const DOOR_BOTTOM_OPEN = [140, 141, 159, 160];
+export const DOOR_LEFT_CLOSED = [218, 219, 237, 238];
+export const DOOR_LEFT_OPEN = [180, 181, 199, 200];
+export const DOOR_RIGHT_CLOSED = [173, 174, 192, 193];
+export const DOOR_RIGHT_OPEN = [171, 172, 190, 191];
+
 /**
  * Map constants
  */
@@ -46,3 +55,9 @@ export const MAP_RENDER_OFFSET_Y = (GAME_HEIGHT - (MAP_HEIGHT * TILE_HEIGHT)) / 
  export const RIGHT = 'right';
  export const UP = 'up';
  export const DOWN = 'down';
+
+ /**
+  * Player constants
+  */
+
+export const PLAYER_PADDING_BOTTOM = 5;
