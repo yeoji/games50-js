@@ -1,0 +1,376 @@
+[
+    {
+        "name": "skeleton",
+        "texture": "entities",
+        "animations": [
+            {
+                "key": "walk-down",
+                "frames": {
+                    "start": 9,
+                    "end": 11
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-left",
+                "frames": {
+                    "start": 21,
+                    "end": 23
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-right",
+                "frames": {
+                    "start": 33,
+                    "end": 35
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-up",
+                "frames": {
+                    "start": 45,
+                    "end": 47
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "idle-down",
+                "frames": {
+                    "start": 10
+                }
+            },
+            {
+                "key": "idle-left",
+                "frames": {
+                    "start": 22
+                }
+            },
+            {
+                "key": "idle-right",
+                "frames": {
+                    "start": 34
+                }
+            },
+            {
+                "key": "idle-up",
+                "frames": {
+                    "start": 46
+                }
+            }
+        ],
+        "attributes": {
+            "health": 1,
+            "speed": 30
+        }
+    },
+    {
+        "name": "spider",
+        "texture": "entities",
+        "animations": [
+            {
+                "key": "walk-down",
+                "frames": {
+                    "start": 57,
+                    "end": 59
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-left",
+                "frames": {
+                    "start": 69,
+                    "end": 71
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-right",
+                "frames": {
+                    "start": 81,
+                    "end": 83
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-up",
+                "frames": {
+                    "start": 93,
+                    "end": 95
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "idle-down",
+                "frames": {
+                    "start": 58
+                }
+            },
+            {
+                "key": "idle-left",
+                "frames": {
+                    "start": 70
+                }
+            },
+            {
+                "key": "idle-right",
+                "frames": {
+                    "start": 82
+                }
+            },
+            {
+                "key": "idle-up",
+                "frames": {
+                    "start": 94
+                }
+            }
+        ],
+        "attributes": {
+            "health": 1,
+            "speed": 30
+        }
+    },
+    {
+        "name": "ghost",
+        "texture": "entities",
+        "animations": [
+            {
+                "key": "walk-down",
+                "frames": {
+                    "start": 54,
+                    "end": 56
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-left",
+                "frames": {
+                    "start": 66,
+                    "end": 68
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-right",
+                "frames": {
+                    "start": 78,
+                    "end": 80
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-up",
+                "frames": {
+                    "start": 90,
+                    "end": 92
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "idle-down",
+                "frames": {
+                    "start": 54,
+                    "end": 56
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "idle-left",
+                "frames": {
+                    "start": 66,
+                    "end": 68
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "idle-right",
+                "frames": {
+                    "start": 78,
+                    "end": 80
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "idle-up",
+                "frames": {
+                    "start": 90,
+                    "end": 92
+                },
+                "frameRate": 5,
+                "repeat": -1
+            }
+        ],
+        "attributes": {
+            "health": 1,
+            "speed": 30
+        }
+    },
+    {
+        "name": "bat",
+        "texture": "entities",
+        "animations": [
+            {
+                "key": "walk-down",
+                "frames": {
+                    "start": 51,
+                    "end": 53
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-left",
+                "frames": {
+                    "start": 63,
+                    "end": 65
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-right",
+                "frames": {
+                    "start": 75,
+                    "end": 77
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-up",
+                "frames": {
+                    "start": 87,
+                    "end": 89
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "idle-down",
+                "frames": {
+                    "start": 51,
+                    "end": 53
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "idle-left",
+                "frames": {
+                    "start": 63,
+                    "end": 65
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "idle-right",
+                "frames": {
+                    "start": 75,
+                    "end": 77
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "idle-up",
+                "frames": {
+                    "start": 87,
+                    "end": 89
+                },
+                "frameRate": 5,
+                "repeat": -1
+            }
+        ],
+        "attributes": {
+            "health": 1,
+            "speed": 30
+        }
+    },
+    {
+        "name": "slime",
+        "texture": "entities",
+        "animations": [
+            {
+                "key": "walk-down",
+                "frames": {
+                    "start": 48,
+                    "end": 50
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-left",
+                "frames": {
+                    "start": 60,
+                    "end": 62
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-right",
+                "frames": {
+                    "start": 72,
+                    "end": 74
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "walk-up",
+                "frames": {
+                    "start": 84,
+                    "end": 86
+                },
+                "frameRate": 5,
+                "repeat": -1
+            },
+            {
+                "key": "idle-down",
+                "frames": {
+                    "start": 49
+                }
+            },
+            {
+                "key": "idle-left",
+                "frames": {
+                    "start": 61
+                }
+            },
+            {
+                "key": "idle-right",
+                "frames": {
+                    "start": 73
+                }
+            },
+            {
+                "key": "idle-up",
+                "frames": {
+                    "start": 85
+                }
+            }
+        ],
+        "attributes": {
+            "health": 1,
+            "speed": 30
+        }
+    }
+]

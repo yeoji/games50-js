@@ -3,9 +3,10 @@ import {
     MAP_WIDTH, MAP_HEIGHT, 
     TILE_TOP_LEFT_CORNER, TILE_BOTTOM_LEFT_CORNER, TILE_TOP_RIGHT_CORNER, TILE_BOTTOM_RIGHT_CORNER, 
     TILE_WIDTH, TILE_HEIGHT, MAP_RENDER_OFFSET_X, MAP_RENDER_OFFSET_Y, 
-    TILE_LEFT_WALLS, TILE_RIGHT_WALLS, TILE_TOP_WALLS, TILE_BOTTOM_WALLS, TILE_FLOORS, LEFT, RIGHT, UP, DOWN, PLAYER_PADDING_BOTTOM
+    TILE_LEFT_WALLS, TILE_RIGHT_WALLS, TILE_TOP_WALLS, TILE_BOTTOM_WALLS, TILE_FLOORS, LEFT, RIGHT, UP, DOWN, PLAYER_PADDING_BOTTOM, GAME_WIDTH, GAME_HEIGHT
 } from '../constants';
 import Doorway from './Doorway';
+import Enemy from './enemies/Enemy';
 import Switch from './Switch';
 
 class Room extends Phaser.GameObjects.Container {
@@ -21,6 +22,8 @@ class Room extends Phaser.GameObjects.Container {
         this.switch = new Switch(scene);
         this.player = player;
         this.setupPlayer();
+
+        this.generateEnemies();
     }
 
     generateFloorAndWalls = () => {
@@ -72,6 +75,18 @@ class Room extends Phaser.GameObjects.Container {
             new Doorway(this.scene, UP),
             new Doorway(this.scene, DOWN),
         ]
+    }
+
+    generateEnemies = () => {
+        const numEnemies = Phaser.Math.Between(2, 10);
+
+        this.enemies = [];
+        for (let i = 0; i < numEnemies; i++) {
+            const enemyX = Phaser.Math.Between(MAP_RENDER_OFFSET_X + TILE_WIDTH, GAME_WIDTH - MAP_RENDER_OFFSET_X - TILE_WIDTH);
+            const enemyY = Phaser.Math.Between(MAP_RENDER_OFFSET_Y + TILE_HEIGHT, GAME_HEIGHT - MAP_RENDER_OFFSET_Y - TILE_HEIGHT);
+
+            this.enemies.push(new Enemy(this.scene, enemyX, enemyY));
+        }
     }
 
     setupPlayer = () => {

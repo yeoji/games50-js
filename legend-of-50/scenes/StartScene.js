@@ -25,6 +25,10 @@ class StartScene extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 18
         });
+        this.load.spritesheet("entities", "assets/graphics/entities.png", {
+            frameWidth: 16,
+            frameHeight: 16
+        });
 
         loadFont("zelda", "assets/fonts/zelda.otf");
     }
@@ -48,9 +52,7 @@ class StartScene extends Phaser.Scene {
             fill: 'rgba(255, 255, 255, 255)',
             fontSize: 32
         }).setOrigin(0.5, 0.5);
-    }
 
-    update() {
         this.input.keyboard.on('keydown-ENTER', () => {
             this.scene.start('PlayScene');
         });

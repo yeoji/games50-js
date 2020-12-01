@@ -61,3 +61,9 @@ export const MAP_RENDER_OFFSET_Y = (GAME_HEIGHT - (MAP_HEIGHT * TILE_HEIGHT)) / 
   */
 
 export const PLAYER_PADDING_BOTTOM = 5;
+
+/**
+ * Common constants
+ */
+
+export const SECOND = 1000;
