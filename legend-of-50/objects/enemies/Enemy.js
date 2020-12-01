@@ -9,13 +9,14 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, randomEnemy.texture);
 
         this.name = randomEnemy.name;
-        this.attributes = randomEnemy.attributes;
+        this.attributes = Object.assign({}, randomEnemy.attributes);
 
         this.createAnimations(randomEnemy.texture, randomEnemy.animations);
         this.anims.play(`${this.name}-idle-down`, true);
 
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
+        this.scene.events.on('shutdown', this.die);
         
         this.setCollideWorldBounds();
         this.body.onWorldBounds = true;
@@ -63,10 +64,10 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
         this.anims.play(`${this.name}-walk-${this.direction}`, true);
 
-        setTimeout(() => {
+        this.movingTimeout = setTimeout(() => {
             this.stopMovement();
 
-            setTimeout(() => {
+            this.idleTimeout = setTimeout(() => {
                 this.startMovement();
             }, idleDuration * SECOND);
         }, moveDuration * SECOND);
@@ -99,6 +100,20 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.anims.play(`${this.name}-walk-${this.direction}`, true);
 
         this.bumped = false;
+    }
+
+    damage = (dmg) => {
+        this.attributes.health -= dmg;
+
+        if(this.attributes.health <= 0) {
+            this.die();
+        }
+    }
+
+    die = () => {
+        clearTimeout(this.movingTimeout);
+        clearTimeout(this.idleTimeout);
+        this.destroy();
     }
 }
 

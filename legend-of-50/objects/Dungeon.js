@@ -7,6 +7,10 @@ class Dungeon extends Phaser.GameObjects.Container {
 
         this.currentRoom = new Room(scene, player);
     }
+
+    update = () => {
+        this.currentRoom.update();
+    }
 }
 
 export default Dungeon;

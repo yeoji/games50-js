@@ -1,7 +1,12 @@
 import Phaser from 'phaser';
-import { LEFT, RIGHT, UP, DOWN } from '../constants';
+import { LEFT, RIGHT, UP, DOWN, PLAYER_PADDING, SECOND } from '../constants';
 
+const PLAYER_DAMAGE = 1;
+const PLAYER_HEALTH = 6;
 const WALK_SPEED = 50;
+
+const SWORD_WIDTH = 8;
+const SWORD_HEIGHT = 16;
 
 class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
@@ -9,10 +14,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.direction = DOWN;
         this.attacking = false;
+        this.attributes = {
+            damage: PLAYER_DAMAGE,
+            health: PLAYER_HEALTH
+        }
 
         this.on(Phaser.Animations.Events.SPRITE_ANIMATION_COMPLETE, (anim) => {
             if(anim.key.includes("character-attack")) {
                 this.attacking = false;
+                this.hitbox = null;
             }
         });
 
@@ -20,6 +30,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.scene.physics.add.existing(this);
         this.setCollideWorldBounds();
+    }
+
+    getHurtbox = () => {
+        let x = this.x - this.body.halfWidth;
+        let y = this.y - this.body.halfHeight;
+
+        return new Phaser.Geom.Rectangle(x, y + PLAYER_PADDING, this.width, this.height - (PLAYER_PADDING * 2));
     }
 
     createAnimations = () => {
@@ -125,10 +142,59 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     attack = () => {
         this.attacking = true;
+        this.createSwordHitbox();
 
         this.setVelocity(0);
         this.anims.play(`character-attack-${this.direction}`, true);
         this.anims.chain(`character-idle-${this.direction}`);
+    }
+
+    damage = (dmg) => {
+        if(!this.invulnerable) {
+            this.attributes.health -= dmg;
+            this.goInvulnerable();
+        }
+    }
+
+    goInvulnerable = () => {
+        this.invulnerable = true;
+
+        const invulnerableFlashing = setInterval(() => {
+            if(this.alpha === 1) {
+                this.setAlpha(0.3);
+            } else {
+                this.setAlpha(1);
+            }
+        }, 60);
+
+        setTimeout(() => {
+            clearInterval(invulnerableFlashing);
+            this.setAlpha(1);
+            this.invulnerable = false;
+        }, 1.5 * SECOND);
+    }
+
+    createSwordHitbox = () => {
+        let x = this.x - this.body.halfWidth;
+        let y = this.y - this.body.halfHeight;
+
+        switch(this.direction) {
+            case UP:
+                y = (y + PLAYER_PADDING) - SWORD_HEIGHT;
+                break;
+            case DOWN:
+                y = y + (this.height - PLAYER_PADDING);
+                break;
+            case LEFT:
+                x = x - SWORD_WIDTH;
+                y = y + PLAYER_PADDING;
+                break;
+            case RIGHT:
+                x = x + this.width;
+                y = y + PLAYER_PADDING;
+                break;
+        }
+        this.hitbox = new Phaser.Geom.Rectangle(x, y, SWORD_WIDTH, SWORD_HEIGHT);
     }
 }
 

@@ -3,7 +3,7 @@ import {
     MAP_WIDTH, MAP_HEIGHT, 
     TILE_TOP_LEFT_CORNER, TILE_BOTTOM_LEFT_CORNER, TILE_TOP_RIGHT_CORNER, TILE_BOTTOM_RIGHT_CORNER, 
     TILE_WIDTH, TILE_HEIGHT, MAP_RENDER_OFFSET_X, MAP_RENDER_OFFSET_Y, 
-    TILE_LEFT_WALLS, TILE_RIGHT_WALLS, TILE_TOP_WALLS, TILE_BOTTOM_WALLS, TILE_FLOORS, LEFT, RIGHT, UP, DOWN, PLAYER_PADDING_BOTTOM, GAME_WIDTH, GAME_HEIGHT
+    TILE_LEFT_WALLS, TILE_RIGHT_WALLS, TILE_TOP_WALLS, TILE_BOTTOM_WALLS, TILE_FLOORS, LEFT, RIGHT, UP, DOWN, PLAYER_PADDING, GAME_WIDTH, GAME_HEIGHT
 } from '../constants';
 import Doorway from './Doorway';
 import Enemy from './enemies/Enemy';
@@ -18,12 +18,11 @@ class Room extends Phaser.GameObjects.Container {
 
         this.generateFloorAndWalls();
         this.createDoorways();
+        this.generateEnemies();
 
         this.switch = new Switch(scene);
         this.player = player;
         this.setupPlayer();
-
-        this.generateEnemies();
     }
 
     generateFloorAndWalls = () => {
@@ -87,6 +86,7 @@ class Room extends Phaser.GameObjects.Container {
 
             this.enemies.push(new Enemy(this.scene, enemyX, enemyY));
         }
+        console.log(this.enemies);
     }
 
     setupPlayer = () => {
@@ -94,7 +94,7 @@ class Room extends Phaser.GameObjects.Container {
         this.scene.physics.add.overlap(this.player, this.switch, (player, switchObj) => {
             const playerFeet = {
                 x: player.body.x + player.body.halfWidth, 
-                y: player.body.y + player.body.height - PLAYER_PADDING_BOTTOM
+                y: player.body.y + player.body.height - PLAYER_PADDING
             };
 
             if(Phaser.Geom.Rectangle.Contains(switchObj.getBounds(), playerFeet.x, playerFeet.y)) {
@@ -103,6 +103,18 @@ class Room extends Phaser.GameObjects.Container {
                 this.doorways.forEach(doorway => doorway.open());
             }
         }, null, this);
+    }
+
+    update = () => {
+        this.enemies.forEach(enemy => {
+            if(this.player.hitbox && Phaser.Geom.Rectangle.Overlaps(this.player.hitbox, enemy.getBounds())) {
+                enemy.damage(this.player.attributes.damage);
+            } else if(Phaser.Geom.Rectangle.Overlaps(this.player.getHurtbox(), enemy.getBounds())) {
+                this.player.damage(enemy.attributes.damage);
+            }
+        });
+
+        this.enemies = this.enemies.filter(enemy => enemy.attributes.health > 0);
     }
 }
 

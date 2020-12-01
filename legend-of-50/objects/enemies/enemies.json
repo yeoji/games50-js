@@ -66,6 +66,7 @@
         ],
         "attributes": {
             "health": 1,
+            "damage": 1,
             "speed": 30
         }
     },
@@ -136,6 +137,7 @@
         ],
         "attributes": {
             "health": 1,
+            "damage": 1,
             "speed": 30
         }
     },
@@ -218,6 +220,7 @@
         ],
         "attributes": {
             "health": 1,
+            "damage": 1,
             "speed": 30
         }
     },
@@ -300,6 +303,7 @@
         ],
         "attributes": {
             "health": 1,
+            "damage": 1,
             "speed": 30
         }
     },
@@ -370,6 +374,7 @@
         ],
         "attributes": {
             "health": 1,
+            "damage": 1,
             "speed": 30
         }
     }

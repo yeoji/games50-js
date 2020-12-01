@@ -29,6 +29,10 @@ class StartScene extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 16
         });
+        this.load.spritesheet("hearts", "assets/graphics/hearts.png", {
+            frameWidth: 16,
+            frameHeight: 16
+        });
 
         loadFont("zelda", "assets/fonts/zelda.otf");
     }

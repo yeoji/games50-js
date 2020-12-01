@@ -60,7 +60,12 @@ export const MAP_RENDER_OFFSET_Y = (GAME_HEIGHT - (MAP_HEIGHT * TILE_HEIGHT)) / 
   * Player constants
   */
 
-export const PLAYER_PADDING_BOTTOM = 5;
+export const PLAYER_PADDING = 5;
+
+export const HEART_WIDTH = 16;
+export const FULL_HEART_FRAME_ID = 4;
+export const HALF_HEART_FRAME_ID = 2;
+export const EMPTY_HEART_FRAME_ID = 0;
 
 /**
  * Common constants
