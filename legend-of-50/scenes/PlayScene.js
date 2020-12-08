@@ -1,7 +1,11 @@
 import Phaser from 'phaser';
 import Dungeon from '../objects/Dungeon';
 import Player from '../objects/Player';
-import { LEFT, RIGHT, UP, DOWN, MAP_RENDER_OFFSET_X, MAP_RENDER_OFFSET_Y, GAME_WIDTH, GAME_HEIGHT, TILE_WIDTH, TILE_HEIGHT, FULL_HEART_FRAME_ID, HEART_WIDTH, EMPTY_HEART_FRAME_ID, HALF_HEART_FRAME_ID } from '../constants';
+import { 
+    LEFT, RIGHT, UP, DOWN,
+    FULL_HEART_FRAME_ID, HEART_WIDTH, EMPTY_HEART_FRAME_ID, HALF_HEART_FRAME_ID 
+} from '../constants';
+import Enemy from '../objects/enemies/Enemy';
 
 class PlayScene extends Phaser.Scene {
     constructor() {
@@ -17,10 +21,10 @@ class PlayScene extends Phaser.Scene {
         this.hearts = [];
         const numHearts = 3;
         for (let i = 0; i < numHearts; i++) {
-            this.hearts.push(this.add.sprite((i * (HEART_WIDTH + 1)) + 2, 2, "hearts", FULL_HEART_FRAME_ID).setOrigin(0));
+            this.hearts.push(this.add.sprite((i * (HEART_WIDTH + 1)) + 2, 2, "hearts", FULL_HEART_FRAME_ID).setOrigin(0).setScrollFactor(0).setDepth(999));
         }
 
-        this.physics.world.setBounds(MAP_RENDER_OFFSET_X + TILE_WIDTH, MAP_RENDER_OFFSET_Y, GAME_WIDTH - (MAP_RENDER_OFFSET_X + (TILE_WIDTH * 3)), GAME_HEIGHT - MAP_RENDER_OFFSET_Y - (TILE_HEIGHT * 2));
+        this.physics.world.on(Phaser.Physics.Arcade.Events.WORLD_BOUNDS, this.handleWallCollision);
     }
 
     update() {
@@ -55,6 +59,23 @@ class PlayScene extends Phaser.Scene {
 
             heart.setFrame(heartFrame);
         });
+    }
+
+    handleWallCollision = ({gameObject}) => {
+        if(gameObject instanceof Enemy) {
+            if(!gameObject.bumped) {
+                gameObject.bumped = true;
+                gameObject.reverseDirection();
+            }
+        } else if(gameObject instanceof Player) {
+            // check if player has bumped doorway
+            this.dungeon.currentRoom.doorways.forEach(doorway => {
+                if(doorway.isOpen && Phaser.Geom.Rectangle.Overlaps(doorway.getEntry(), this.player.getBounds())) {
+                    // TODO transition to the other room
+                    this.dungeon.goToNextRoom(this.player, doorway.direction);
+                }
+            })
+        }
     }
 }
 

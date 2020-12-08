@@ -20,12 +20,6 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         
         this.setCollideWorldBounds();
         this.body.onWorldBounds = true;
-        this.scene.physics.world.on(Phaser.Physics.Arcade.Events.WORLD_BOUNDS, (enemy) => {
-            if(!this.bumped) {
-                this.bumped = true;
-                enemy.gameObject.reverseDirection();
-            }
-        })
 
         this.startMovement();
     }

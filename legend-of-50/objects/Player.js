@@ -28,8 +28,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         this.createAnimations();
 
+        this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         this.setCollideWorldBounds();
+        this.body.onWorldBounds = true;
     }
 
     getHurtbox = () => {
