@@ -74,13 +74,15 @@ class Dungeon extends Phaser.GameObjects.Container {
         nextRoom.doorways.forEach(doorway => doorway.open());
 
         player.setCollideWorldBounds(false);
+        player.invulnerable = true;
         this.scene.tweens.add({
             targets: player,
-            x: nextPlayerPosition.x + roomOffset.x + 5,
+            x: nextPlayerPosition.x + roomOffset.x,
             y: nextPlayerPosition.y + roomOffset.y + 5,
             onComplete: () => {
                 player.setCollideWorldBounds();
                 player.setPosition(player.x - roomOffset.x, player.y - roomOffset.y);
+                player.invulnerable = false;
 
                 nextRoom.doorways.forEach(doorway => doorway.close());
             }

@@ -35,10 +35,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     getHurtbox = () => {
-        let x = this.x - this.body.halfWidth;
-        let y = this.y - this.body.halfHeight;
-
-        return new Phaser.Geom.Rectangle(x, y + PLAYER_PADDING, this.width, this.height - (PLAYER_PADDING * 2));
+        return new Phaser.Geom.Rectangle(this.x - 4, this.y - 4, 8, 12);
     }
 
     createAnimations = () => {
@@ -178,25 +175,35 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     createSwordHitbox = () => {
         let x = this.x - this.body.halfWidth;
-        let y = this.y - this.body.halfHeight;
+        let y = this.y - this.body.halfHeight + PLAYER_PADDING;
+        let width;
+        let height;
 
         switch(this.direction) {
             case UP:
-                y = (y + PLAYER_PADDING) - SWORD_HEIGHT;
+                // flip directions for up and down
+                width = SWORD_HEIGHT;
+                height = SWORD_WIDTH;
                 break;
             case DOWN:
-                y = y + (this.height - PLAYER_PADDING);
+                y = y + (this.height - (PLAYER_PADDING * 2));
+                width = SWORD_HEIGHT;
+                height = SWORD_WIDTH;
                 break;
             case LEFT:
                 x = x - SWORD_WIDTH;
                 y = y + PLAYER_PADDING;
+                width = SWORD_WIDTH;
+                height = SWORD_HEIGHT;
                 break;
             case RIGHT:
                 x = x + this.width;
                 y = y + PLAYER_PADDING;
+                width = SWORD_WIDTH;
+                height = SWORD_HEIGHT;
                 break;
         }
-        this.hitbox = new Phaser.Geom.Rectangle(x, y, SWORD_WIDTH, SWORD_HEIGHT);
+        this.hitbox = new Phaser.Geom.Rectangle(x, y, width, height);
     }
 }
 
