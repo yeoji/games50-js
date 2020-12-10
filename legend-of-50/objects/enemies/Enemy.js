@@ -72,6 +72,13 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.anims.play(`${this.name}-idle-${this.direction}`, true);
     }
 
+    bumpedIntoThings = () => {
+        if(!this.bumped) {
+            this.bumped = true;
+            this.reverseDirection();
+        }
+    }
+
     reverseDirection = () => {
         switch(this.direction) {
             case LEFT:

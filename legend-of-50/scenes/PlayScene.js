@@ -26,13 +26,13 @@ class PlayScene extends Phaser.Scene {
 
         this.physics.world.on(Phaser.Physics.Arcade.Events.WORLD_BOUNDS, this.handleWallCollision);
 
-        // this.boxDebug = this.add.rectangle(0, 0, 0, 0, 0xff0000);
+        // this.boxDebug = this.add.rectangle(0, 0, 0, 0, 0xff0000, 0.1);
     }
 
     update() {
-        // this.boxDebug.width = this.player.getHurtbox().width;
-        // this.boxDebug.height = this.player.getHurtbox().height;
-        // this.boxDebug.setPosition(this.player.getHurtbox().x, this.player.getHurtbox().y);
+        // this.boxDebug.width = this.dungeon.currentRoom.pots[0].width;
+        // this.boxDebug.height = this.dungeon.currentRoom.pots[0].height;
+        // this.boxDebug.setPosition(this.dungeon.currentRoom.pots[0].x, this.dungeon.currentRoom.pots[0].y).setDepth(0);
 
         if (Phaser.Input.Keyboard.JustDown(this.controls.space)) {
             this.player.attack();
@@ -69,10 +69,7 @@ class PlayScene extends Phaser.Scene {
 
     handleWallCollision = ({gameObject}) => {
         if(gameObject instanceof Enemy) {
-            if(!gameObject.bumped) {
-                gameObject.bumped = true;
-                gameObject.reverseDirection();
-            }
+            gameObject.bumpedIntoThings();
         } else if(gameObject instanceof Player) {
             // check if player has bumped doorway
             this.dungeon.currentRoom.doorways.forEach(doorway => {

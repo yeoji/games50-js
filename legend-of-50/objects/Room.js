@@ -7,6 +7,7 @@ import {
 } from '../constants';
 import Doorway from './Doorway';
 import Enemy from './enemies/Enemy';
+import Pot from './Pot';
 import Switch from './Switch';
 
 class Room extends Phaser.GameObjects.Container {
@@ -23,8 +24,14 @@ class Room extends Phaser.GameObjects.Container {
         this.generateEnemies();
 
         this.switch = new Switch(scene, roomOffset);
+        this.generatePots();
+
         this.player = player;
         this.setupPlayer();
+
+        this.scene.physics.add.collider(this.enemies, this.pots, (enemy) => {
+            enemy.bumpedIntoThings();
+        });
 
         this.droppedHearts = [];
 
@@ -96,6 +103,15 @@ class Room extends Phaser.GameObjects.Container {
         }
     }
 
+    generatePots = () => {
+        const potsToGenerate = Phaser.Math.Between(0, 3);
+
+        this.pots = [];
+        for (let i = 0; i < potsToGenerate; i++) {
+            this.pots.push(new Pot(this.scene, this.roomOffset));
+        }
+    }
+
     setupPlayer = () => {
         this.player.setDepth(this.depth + 1); //brings the player to the front
 
@@ -111,6 +127,10 @@ class Room extends Phaser.GameObjects.Container {
                 this.doorways.forEach(doorway => doorway.open());
             }
         }, null, this);
+
+        this.scene.physics.add.collider(this.player, this.pots, (player, pot) => {
+            console.log('colliding with pot');
+        }, null, this)
     }
 
     update = () => {
