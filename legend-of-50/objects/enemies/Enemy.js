@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { DOWN, LEFT, RIGHT, UP, SECOND } from '../../constants';
+import { DOWN, LEFT, RIGHT, UP, SECOND, FULL_HEART_FRAME_ID } from '../../constants';
 import enemies from './enemies.json';
 
 class Enemy extends Phaser.Physics.Arcade.Sprite {
@@ -100,8 +100,18 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
         this.attributes.health -= dmg;
 
         if(this.attributes.health <= 0) {
+            // random change to drop heart
+            const shouldDropHeart = Phaser.Math.Between(0, 5) === 0;
+            if(shouldDropHeart) {
+                this.dropHeart();
+            }
+
             this.die();
         }
+    }
+
+    dropHeart = () => {
+        this.droppedHeart = this.scene.add.sprite(this.x, this.y, "hearts", FULL_HEART_FRAME_ID).setScale(0.9, 0.9);
     }
 
     die = () => {

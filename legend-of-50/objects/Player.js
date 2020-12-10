@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { LEFT, RIGHT, UP, DOWN, PLAYER_PADDING, SECOND } from '../constants';
 
 const PLAYER_DAMAGE = 1;
-const PLAYER_HEALTH = 6;
+const PLAYER_MAX_HEALTH = 6;
 const WALK_SPEED = 50;
 
 const SWORD_WIDTH = 8;
@@ -16,7 +16,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.attacking = false;
         this.attributes = {
             damage: PLAYER_DAMAGE,
-            health: PLAYER_HEALTH
+            health: PLAYER_MAX_HEALTH
         }
 
         this.on(Phaser.Animations.Events.SPRITE_ANIMATION_COMPLETE, (anim) => {
@@ -153,6 +153,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.attributes.health -= dmg;
             this.goInvulnerable();
         }
+    }
+
+    heal = (hp) => {
+        this.attributes.health = Math.min(this.attributes.health + hp, PLAYER_MAX_HEALTH);
     }
 
     goInvulnerable = () => {

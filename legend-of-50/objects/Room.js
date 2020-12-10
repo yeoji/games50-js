@@ -26,6 +26,8 @@ class Room extends Phaser.GameObjects.Container {
         this.player = player;
         this.setupPlayer();
 
+        this.droppedHearts = [];
+
         this.scene.physics.world.setBounds(MAP_RENDER_OFFSET_X + TILE_WIDTH + roomOffset.x, MAP_RENDER_OFFSET_Y + roomOffset.y, GAME_WIDTH - (MAP_RENDER_OFFSET_X + (TILE_WIDTH * 3)), GAME_HEIGHT - MAP_RENDER_OFFSET_Y - (TILE_HEIGHT * 2));
     }
 
@@ -120,7 +122,15 @@ class Room extends Phaser.GameObjects.Container {
             }
         });
 
+        this.droppedHearts = [...this.droppedHearts, ...this.enemies.map(enemy => enemy.droppedHeart).filter(heart => heart)];
         this.enemies = this.enemies.filter(enemy => enemy.attributes.health > 0);
+
+        this.droppedHearts.forEach(heart => {
+            if(Phaser.Geom.Rectangle.Overlaps(this.player.getHurtbox(), heart.getBounds())) {
+                this.player.heal(2);
+                heart.destroy();
+            }
+        })
     }
 
     resetPosition = () => {
