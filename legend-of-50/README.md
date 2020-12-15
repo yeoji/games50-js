@@ -2,6 +2,12 @@
 
 The Games50 Legend of Zelda game remade with Phaser.
 
+### Run the Game
+
+```
+yarn dev
+```
+
 ### Play the Game
 
 **Controls**

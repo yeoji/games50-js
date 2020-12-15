@@ -6,15 +6,10 @@
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "parcel index.html",
-    "build": "yarn clean && parcel build index.html --no-source-maps",
-    "deploy": "cp CNAME ./dist && gh-pages -d dist"
+    "build": "yarn clean && parcel build index.html --no-source-maps"
   },
   "staticFiles": {
     "staticPath": [
-      {
-        "staticPath": "assets",
-        "staticOutDir": "assets"
-      },
       {
         "staticPath": "super-50-bros/assets",
         "staticOutDir": "super-50-bros/assets"
