@@ -25,6 +25,10 @@ class Pot extends Phaser.Physics.Arcade.Sprite {
 
         this.setCollideWorldBounds();
         this.body.onWorldBounds = true;
+
+        this.once(Phaser.GameObjects.Events.DESTROY, () => {
+            this.scene.sound.play('pot-break');
+        })
     }
 }
 

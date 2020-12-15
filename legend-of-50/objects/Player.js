@@ -156,10 +156,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocity(0);
         this.anims.play(`character-attack-${this.direction}`, true);
         this.anims.chain(`character-idle-${this.direction}`);
+
+        this.scene.sound.play('sword');
     }
 
     damage = (dmg) => {
         if(!this.invulnerable) {
+            this.scene.sound.play('hit-player');
+
             this.attributes.health -= dmg;
             this.goInvulnerable();
         }
@@ -226,17 +230,20 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             return;
         }
 
+        this.scene.sound.play('pickup');
         this.anims.play(`character-lift-${this.direction}`, true);
 
         object.disableBody();
         object.setPosition(this.x - this.body.halfWidth, this.y - this.body.halfHeight - object.height + PLAYER_PADDING);
 
         object.setDepth(this.depth + 1);
-        
+
         this.holding = object;
     }
 
     throw() {
+        this.scene.sound.play('pickup');
+
         this.holding.enableBody();
         this.holding.thrown = true;
 

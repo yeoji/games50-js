@@ -104,6 +104,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     }
 
     damage = (dmg) => {
+        this.scene.sound.play('hit-enemy');
         this.attributes.health -= dmg;
 
         if(this.attributes.health <= 0) {

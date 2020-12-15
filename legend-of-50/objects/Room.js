@@ -130,8 +130,9 @@ class Room extends Phaser.GameObjects.Container {
                 switchObj.activate();
 
                 this.doorways.forEach(doorway => doorway.open());
+                this.scene.sound.play('door');
             }
-        }, null, this);
+        }, (player, switchObj) =>  !switchObj.activated, this);
 
         this.scene.physics.add.collider(this.player, this.pots, null, (player, pot) => {
             return !pot.thrown;
@@ -147,12 +148,13 @@ class Room extends Phaser.GameObjects.Container {
             }
         });
 
-        this.droppedHearts = [...this.droppedHearts, ...this.enemies.map(enemy => enemy.droppedHeart).filter(heart => heart)];
+        this.droppedHearts = [...this.droppedHearts.filter(heart => heart.active), ...this.enemies.map(enemy => enemy.droppedHeart).filter(heart => heart)];
         this.enemies = this.enemies.filter(enemy => enemy.attributes.health > 0);
 
         this.droppedHearts.forEach(heart => {
             if(Phaser.Geom.Rectangle.Overlaps(this.player.getHurtbox(), heart.getBounds())) {
                 this.player.heal(2);
+                this.scene.sound.play('heart');
                 heart.destroy();
             }
         });
@@ -174,6 +176,7 @@ class Room extends Phaser.GameObjects.Container {
         this.enemies.forEach(enemy => enemy.setPosition(enemy.x - this.roomOffset.x, enemy.y - this.roomOffset.y));
         this.doorways.forEach(doorway => doorway.resetPosition());
         this.switch.setPosition(this.switch.x - this.roomOffset.x, this.switch.y - this.roomOffset.y);
+        this.pots.forEach(pot => pot.setPosition(pot.x - this.roomOffset.x, pot.y - this.roomOffset.y))
     }
 
     cleanup = () => {

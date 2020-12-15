@@ -43,6 +43,18 @@ class StartScene extends Phaser.Scene {
         });
 
         loadFont("zelda", "assets/fonts/zelda.otf");
+        this.loadSounds();
+    }
+
+    loadSounds() {
+        this.load.audio("music", "assets/sounds/music.mp3")
+        this.load.audio("door", "assets/sounds/door.wav")
+        this.load.audio("hit-enemy", "assets/sounds/hit_enemy.wav")
+        this.load.audio("hit-player", "assets/sounds/hit_player.wav")
+        this.load.audio("sword", "assets/sounds/sword.wav")
+        this.load.audio("pickup", "assets/sounds/pickup.wav")
+        this.load.audio("pot-break", "assets/sounds/pot_break.mp3")
+        this.load.audio("heart", "assets/sounds/heart.wav")
     }
 
     create() {
@@ -64,6 +76,13 @@ class StartScene extends Phaser.Scene {
             fill: 'rgba(255, 255, 255, 255)',
             fontSize: 32
         }).setOrigin(0.5, 0.5);
+
+        if(!this.sound.get("music") || !this.sound.get("music").isPlaying) {
+            this.sound.play("music", {
+                sound: 0.5,
+                loop: true
+            });
+        }
 
         this.input.keyboard.on('keydown-ENTER', () => {
             this.scene.start('PlayScene');

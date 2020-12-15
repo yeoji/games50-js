@@ -85,6 +85,7 @@ class Dungeon extends Phaser.GameObjects.Container {
                 player.invulnerable = false;
 
                 nextRoom.doorways.forEach(doorway => doorway.close());
+                this.scene.sound.play('door');
             }
         });
 
