@@ -6,6 +6,7 @@ import {
     FULL_HEART_FRAME_ID, HEART_WIDTH, EMPTY_HEART_FRAME_ID, HALF_HEART_FRAME_ID 
 } from '../constants';
 import Enemy from '../objects/enemies/Enemy';
+import Pot from '../objects/Pot';
 
 class PlayScene extends Phaser.Scene {
     constructor() {
@@ -36,6 +37,8 @@ class PlayScene extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.controls.space)) {
             this.player.attack();
+        } else if(this.player.holding && Phaser.Input.Keyboard.JustDown(this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER))) {
+            this.player.throw();
         } else {
             if(this.controls.left.isDown) {
                 this.player.move(LEFT);
@@ -77,6 +80,8 @@ class PlayScene extends Phaser.Scene {
                     this.dungeon.goToNextRoom(this.player, doorway.direction);
                 }
             })
+        } else if(gameObject instanceof Pot) {
+            gameObject.destroy();
         }
     }
 }

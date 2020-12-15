@@ -29,8 +29,13 @@ class Room extends Phaser.GameObjects.Container {
         this.player = player;
         this.setupPlayer();
 
-        this.scene.physics.add.collider(this.enemies, this.pots, (enemy) => {
-            enemy.bumpedIntoThings();
+        this.scene.physics.add.collider(this.enemies, this.pots, (enemy, pot) => {
+            if(pot.thrown) {
+                enemy.damage(1);
+                pot.destroy();
+            } else {
+                enemy.bumpedIntoThings();
+            }
         });
 
         this.droppedHearts = [];
@@ -128,7 +133,9 @@ class Room extends Phaser.GameObjects.Container {
             }
         }, null, this);
 
-        this.scene.physics.add.collider(this.player, this.pots);
+        this.scene.physics.add.collider(this.player, this.pots, null, (player, pot) => {
+            return !pot.thrown;
+        });
     }
 
     update = () => {

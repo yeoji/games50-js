@@ -8,6 +8,8 @@ const WALK_SPEED = 50;
 const SWORD_WIDTH = 8;
 const SWORD_HEIGHT = 16;
 
+const OBJECT_THROW_SPEED = 80;
+
 class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, "character");
@@ -219,7 +221,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     pickUp(object) {
-        if(this.holding != null) {
+        if(this.holding) {
             // already holding an object
             return;
         }
@@ -229,7 +231,36 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         object.disableBody();
         object.setPosition(this.x - this.body.halfWidth, this.y - this.body.halfHeight - object.height + PLAYER_PADDING);
 
+        object.setDepth(this.depth + 1);
+        
         this.holding = object;
+    }
+
+    throw() {
+        this.holding.enableBody();
+        this.holding.thrown = true;
+
+        switch(this.direction) {
+            case UP:
+                this.holding.setVelocityY(-OBJECT_THROW_SPEED);
+                break;
+            case DOWN:
+                this.holding.setVelocityY(OBJECT_THROW_SPEED);
+                break;
+            case LEFT:
+                this.holding.setVelocityX(-OBJECT_THROW_SPEED);
+                break;
+            case RIGHT:
+                this.holding.setVelocityX(OBJECT_THROW_SPEED);
+                break;
+        }
+
+        setTimeout((object) => {
+            object.destroy();
+        }, 1000, this.holding);
+
+        this.holding = null;
+        this.anims.play(`character-idle-${this.direction}`, true);
     }
 }
 

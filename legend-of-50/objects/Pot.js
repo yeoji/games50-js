@@ -16,10 +16,15 @@ class Pot extends Phaser.Physics.Arcade.Sprite {
         super(scene, randomX + roomOffset.x, randomY + roomOffset.y, 'tiles', randomPot);
 
         this.scene.add.existing(this.setOrigin(0, 0));
-        this.scene.physics.add.existing(this, true);
+        this.scene.physics.add.existing(this);
+
+        this.setImmovable(true);
 
         this.setBodySize(this.width - 2, this.height);
         this.setSize(this.width - 2, this.height);
+
+        this.setCollideWorldBounds();
+        this.body.onWorldBounds = true;
     }
 }
 
