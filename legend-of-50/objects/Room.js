@@ -128,9 +128,7 @@ class Room extends Phaser.GameObjects.Container {
             }
         }, null, this);
 
-        this.scene.physics.add.collider(this.player, this.pots, (player, pot) => {
-            console.log('colliding with pot');
-        }, null, this)
+        this.scene.physics.add.collider(this.player, this.pots);
     }
 
     update = () => {
@@ -149,6 +147,15 @@ class Room extends Phaser.GameObjects.Container {
             if(Phaser.Geom.Rectangle.Overlaps(this.player.getHurtbox(), heart.getBounds())) {
                 this.player.heal(2);
                 heart.destroy();
+            }
+        });
+
+        this.pots.forEach(pot => {
+            if(Phaser.Geom.Rectangle.Overlaps(this.player.getBounds(), pot.getBounds())) {
+                const pickUpKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+                if(Phaser.Input.Keyboard.JustDown(pickUpKey)) {
+                    this.player.pickUp(pot);
+                }
             }
         })
     }

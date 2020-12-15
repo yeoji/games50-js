@@ -21,6 +21,14 @@ class StartScene extends Phaser.Scene {
             frameWidth: 32,
             frameHeight: 32,
         });
+        this.load.spritesheet("character-lift", "assets/graphics/character_pot_lift.png", {
+            frameWidth: 16,
+            frameHeight: 32,
+        });
+        this.load.spritesheet("character-lift-walk", "assets/graphics/character_pot_walk.png", {
+            frameWidth: 16,
+            frameHeight: 32,
+        });
         this.load.spritesheet("switches", "assets/graphics/switches.png", {
             frameWidth: 16,
             frameHeight: 18

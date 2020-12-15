@@ -18,6 +18,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             damage: PLAYER_DAMAGE,
             health: PLAYER_MAX_HEALTH
         }
+        this.holding = null;
 
         this.on(Phaser.Animations.Events.SPRITE_ANIMATION_COMPLETE, (anim) => {
             if(anim.key.includes("character-attack")) {
@@ -43,70 +44,58 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     createAnimations = () => {
-        this.scene.anims.create({
-            key: "character-idle-left",
-            frames: [{ key: 'character', frame: 12 }],
-            frameRate: 20
+        const walkIdleLiftAnims = {
+            down: 0,
+            right: 4,
+            up: 8,
+            left: 12,
+        }
+        Object.entries(walkIdleLiftAnims).forEach(([direction, startFrame], index) => {
+            this.scene.anims.create({
+                key: `character-idle-${direction}`,
+                frames: [{ key: 'character', frame: startFrame }],
+                frameRate: 20
+            });
+
+            this.scene.anims.create({
+                key: `character-walk-${direction}`,
+                frames: this.scene.anims.generateFrameNumbers('character', { start: startFrame, end: startFrame + 3 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.scene.anims.create({
+                key: `character-lift-${direction}`,
+                frames: this.scene.anims.generateFrameNumbers('character-lift', { start: startFrame - index, end: startFrame - index + 2 }),
+                frameRate: 20,
+            });
+
+            this.scene.anims.create({
+                key: `character-lift-idle-${direction}`,
+                frames: [{ key: 'character-lift-walk', frame: startFrame }],
+                frameRate: 20
+            });
+            this.scene.anims.create({
+                key: `character-lift-walk-${direction}`,
+                frames: this.scene.anims.generateFrameNumbers('character-lift-walk', { start: startFrame, end: startFrame + 3 }),
+                frameRate: 10,
+                repeat: -1
+            });
         });
-        this.scene.anims.create({
-            key: "character-idle-right",
-            frames: [{ key: 'character', frame: 4 }],
-            frameRate: 20
+
+        const attackAnims = {
+            left: 12,
+            right: 8,
+            up: 4,
+            down: 0
+        }
+        Object.entries(attackAnims).forEach(([direction, startFrame]) => {
+            this.scene.anims.create({
+                key: `character-attack-${direction}`,
+                frames: this.scene.anims.generateFrameNumbers('character-attack', { start: startFrame, end: startFrame + 3 }),
+                frameRate: 20,
+            })
         });
-        this.scene.anims.create({
-            key: "character-idle-up",
-            frames: [{ key: 'character', frame: 8 }],
-            frameRate: 20
-        });
-        this.scene.anims.create({
-            key: "character-idle-down",
-            frames: [{ key: 'character', frame: 0 }],
-            frameRate: 20
-        });
-        this.scene.anims.create({
-            key: "character-walk-left",
-            frames: this.scene.anims.generateFrameNumbers('character', { start: 12, end: 15 }),
-            frameRate: 10,
-            repeat: -1
-        })
-        this.scene.anims.create({
-            key: "character-walk-right",
-            frames: this.scene.anims.generateFrameNumbers('character', { start: 4, end: 7 }),
-            frameRate: 10,
-            repeat: -1
-        })
-        this.scene.anims.create({
-            key: "character-walk-up",
-            frames: this.scene.anims.generateFrameNumbers('character', { start: 8, end: 11 }),
-            frameRate: 10,
-            repeat: -1
-        })
-        this.scene.anims.create({
-            key: "character-walk-down",
-            frames: this.scene.anims.generateFrameNumbers('character', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        })
-        this.scene.anims.create({
-            key: "character-attack-left",
-            frames: this.scene.anims.generateFrameNumbers('character-attack', { start: 12, end: 15 }),
-            frameRate: 20,
-        })
-        this.scene.anims.create({
-            key: "character-attack-right",
-            frames: this.scene.anims.generateFrameNumbers('character-attack', { start: 8, end: 11 }),
-            frameRate: 20,
-        })
-        this.scene.anims.create({
-            key: "character-attack-up",
-            frames: this.scene.anims.generateFrameNumbers('character-attack', { start: 4, end: 7 }),
-            frameRate: 20,
-        })
-        this.scene.anims.create({
-            key: "character-attack-down",
-            frames: this.scene.anims.generateFrameNumbers('character-attack', { start: 0, end: 3 }),
-            frameRate: 20,
-        })
     }
 
     move = (direction) => {
@@ -133,17 +122,32 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 break;
         }
 
-        this.anims.play(`character-walk-${direction}`, true);
+        if(this.holding !== null) {
+            this.anims.play(`character-lift-walk-${direction}`, true);
+
+            this.holding.disableBody();
+            this.holding.setPosition(this.x - this.body.halfWidth, this.y - this.body.halfHeight - this.holding.height + PLAYER_PADDING);
+        } else {
+            this.anims.play(`character-walk-${direction}`, true);
+        }
     }
 
     stop = () => {
         if(this.body.velocity.x !== 0 || this.body.velocity.y !== 0) {
-            this.anims.play(`character-idle-${this.direction}`, true);
+            if(this.holding !== null) {
+                this.anims.play(`character-lift-idle-${this.direction}`, true);
+            } else {
+                this.anims.play(`character-idle-${this.direction}`, true);
+            }
             this.setVelocity(0);
         }
     }
 
     attack = () => {
+        if(this.holding) {
+            return;
+        }
+
         this.attacking = true;
         this.createSwordHitbox();
 
@@ -212,6 +216,20 @@ class Player extends Phaser.Physics.Arcade.Sprite {
                 break;
         }
         this.hitbox = new Phaser.Geom.Rectangle(x, y, width, height);
+    }
+
+    pickUp(object) {
+        if(this.holding != null) {
+            // already holding an object
+            return;
+        }
+
+        this.anims.play(`character-lift-${this.direction}`, true);
+
+        object.disableBody();
+        object.setPosition(this.x - this.body.halfWidth, this.y - this.body.halfHeight - object.height + PLAYER_PADDING);
+
+        this.holding = object;
     }
 }
 

@@ -74,7 +74,6 @@ class PlayScene extends Phaser.Scene {
             // check if player has bumped doorway
             this.dungeon.currentRoom.doorways.forEach(doorway => {
                 if(doorway.isOpen && Phaser.Geom.Rectangle.Overlaps(doorway.getEntry(), this.player.getBounds())) {
-                    // TODO transition to the other room
                     this.dungeon.goToNextRoom(this.player, doorway.direction);
                 }
             })
