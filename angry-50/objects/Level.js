@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import LaunchMarker from './LaunchMarker';
 import levels from '../levels.json';
-import Alien from './Alien';
+import Alien, {CIRCLE_ALIEN} from './Alien';
 import Obstacle from './Obstacle';
 
 class Level extends Phaser.GameObjects.Container {
@@ -13,6 +13,9 @@ class Level extends Phaser.GameObjects.Container {
 
         this.instructions = this.createInstructions();
         this.victoryText = this.createVictoryText();
+
+        this.extraAliens = [];
+        this.spaceKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.loadLevel();
     }
@@ -39,7 +42,12 @@ class Level extends Phaser.GameObjects.Container {
         } else {
             this.instructions.setVisible(false);
 
-            if(Math.abs(this.launchMarker.alien.body.velocity.x) + Math.abs(this.launchMarker.alien.body.velocity.y) < 0.0001) {
+            const playerStopped = (
+                Math.abs(this.launchMarker.alien.body.velocity.x) + Math.abs(this.launchMarker.alien.body.velocity.y) < 0.0001
+                &&
+                this.extraAliens.filter(alien => alien.body && (Math.abs(alien.body.velocity.x) + Math.abs(alien.body.velocity.y) >= 0.0001)).length === 0
+            );
+            if(playerStopped) {
                 if(activeEnemies === 0) {
                     this.scene.scene.start('PlayScene', {
                         levelNo: (this.levelNo % levels.length) + 1
@@ -47,12 +55,31 @@ class Level extends Phaser.GameObjects.Container {
                 }
 
                 this.launchMarker.resetLaunchMarker();
+                this.extraAliens.forEach(alien => alien.destroy());
+                this.extraAliens = [];
+            } else {
+                if(this.extraAliens.length === 0 && Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
+                    this.splitAlien();
+                }
             }
         }
 
         if(activeEnemies === 0) {
             this.victoryText.setVisible(true);
         }
+    }
+
+    splitAlien() {
+        const mainAlienX = this.launchMarker.alien.x;
+        const mainAlienY = this.launchMarker.alien.y;
+
+        const mainAlienVelX = this.launchMarker.alien.body.velocity.x;
+        const mainAlienVelY = this.launchMarker.alien.body.velocity.y;
+
+        this.extraAliens = [
+            new Alien(this.scene, mainAlienX, mainAlienY, CIRCLE_ALIEN).setAngle(45).setVelocity(mainAlienVelX, mainAlienVelY - 1),
+            new Alien(this.scene, mainAlienX, mainAlienY, CIRCLE_ALIEN).setAngle(135).setVelocity(mainAlienVelX, mainAlienVelY + 1),
+        ];
     }
 
     createInstructions() {

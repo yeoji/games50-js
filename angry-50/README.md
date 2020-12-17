@@ -13,6 +13,7 @@ yarn dev
 **Controls**
 
 `Click & Drag` - Launch the alien
+`Space` - (While alien is in flight) Splits the alien into 3
 
 ### Assets
 

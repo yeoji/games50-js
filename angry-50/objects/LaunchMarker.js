@@ -36,6 +36,9 @@ class LaunchMarker extends Phaser.GameObjects.Zone {
     }
 
     resetLaunchMarker() {
+        this.shiftedX = this.baseX;
+        this.shiftedY = this.baseY;
+
         this.launched = false;
         this.alien.destroy();
 

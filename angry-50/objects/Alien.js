@@ -26,13 +26,17 @@ class Alien extends Phaser.Physics.Matter.Sprite {
     }
 
     handleCollision = ({bodyA, bodyB}) => {
-        if(this.scene.scene.key === 'StartScene') {
+        if(!this.scene || this.scene.scene.key === 'StartScene') {
             return;
         }
 
         const scene = this.scene;
 
         if(bodyA.gameObject instanceof Alien && bodyB.gameObject instanceof Alien) {
+            if(bodyA.gameObject.type === CIRCLE_ALIEN && bodyB.gameObject.type === CIRCLE_ALIEN) {
+                return;
+            }
+            
             const player = bodyA.gameObject.type === CIRCLE_ALIEN ? bodyA : bodyB;
             const enemy = bodyA.gameObject.type === CIRCLE_ALIEN ? bodyB : bodyA;
 
