@@ -11,13 +11,17 @@ class PlayScene extends Phaser.Scene {
         super("PlayScene");
     }
 
+    init(data) {
+        this.levelNo = data.levelNo;
+    }
+
     create() {
         this.matter.world.setBounds(0, 0, this.game.config.width, this.game.config.height - GROUND_HEIGHT);
 
         renderBackground(this);
         this.drawGround();
 
-        this.level = new Level(this);
+        this.level = new Level(this, this.levelNo);
     }
 
     drawGround() {

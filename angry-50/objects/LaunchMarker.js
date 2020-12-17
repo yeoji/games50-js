@@ -18,7 +18,11 @@ class LaunchMarker extends Phaser.GameObjects.Zone {
         this.alien = new Alien(scene, this.x, this.y, CIRCLE_ALIEN);
         this.alien.setStatic(true);
 
-        this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, () => { this.aiming = true });
+        this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, () => { 
+            if(!this.launched) {
+                this.aiming = true 
+            }
+        });
         this.scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.handleAiming, this)
         this.scene.input.on(Phaser.Input.Events.POINTER_UP, this.launchAlien, this)
     }
@@ -29,6 +33,14 @@ class LaunchMarker extends Phaser.GameObjects.Zone {
         }
 
         this.alien.setPosition(this.shiftedX, this.shiftedY);
+    }
+
+    resetLaunchMarker() {
+        this.launched = false;
+        this.alien.destroy();
+
+        this.alien = new Alien(this.scene, this.x, this.y, CIRCLE_ALIEN);
+        this.alien.setStatic(true);
     }
 
     handleAiming(pointer) {
@@ -69,7 +81,7 @@ class LaunchMarker extends Phaser.GameObjects.Zone {
         this.removeTrajectory();
 
         this.alien.setStatic(false);
-        this.alien.setVelocity((this.baseX - this.shiftedX) / 3, (this.baseY - this.shiftedY) / 3);
+        this.alien.setVelocity((this.baseX - this.shiftedX) / 2.8, (this.baseY - this.shiftedY) / 2.8);
     }
 
     removeTrajectory() {
