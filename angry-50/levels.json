@@ -1,0 +1,31 @@
+[
+    {
+        "level": 1,
+        "enemies": [
+            {
+                "x": 560,
+                "y": 307.5
+            }
+        ],
+        "obstacles": [
+            {
+                "material": "wood",
+                "type": "vertical",
+                "x": 520,
+                "y": 270
+            },
+            {
+                "material": "wood",
+                "type": "vertical",
+                "x": 605,
+                "y": 270
+            },
+            {
+                "material": "wood",
+                "type": "horizontal",
+                "x": 560,
+                "y": 197.5
+            }
+        ]
+    }
+]

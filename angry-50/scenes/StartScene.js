@@ -19,6 +19,8 @@ class StartScene extends Phaser.Scene {
             frameWidth: 35,
             frameHeight: 35
         });
+        
+        this.load.atlas('wood', 'assets/graphics/obstacles/wood.png', 'assets/graphics/obstacles/wood.json');
 
         loadFont("font", "assets/fonts/font.ttf");
     }
