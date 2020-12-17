@@ -11,6 +11,8 @@ class Alien extends Phaser.Physics.Matter.Sprite {
         const frameId = type === SQUARE_ALIEN ? Phaser.Math.Between(0, 4) : Phaser.Math.RND.pick(CIRCLE_FRAME_IDS);
         
         super(scene.matter.world, x, y, 'aliens', frameId);
+        this.scene = scene;
+
         scene.add.existing(this);
 
         this.type = type;
@@ -20,19 +22,24 @@ class Alien extends Phaser.Physics.Matter.Sprite {
         }
 
         this.setBounce(0.4);
-        this.setOnCollide(this.handleCollision)
+        this.setOnCollide(this.handleCollision);
     }
 
     handleCollision = ({bodyA, bodyB}) => {
-        if(bodyA.gameObject instanceof Alien && bodyB.gameObject instanceof Alien) {
-            if(bodyA.gameObject.type === SQUARE_ALIEN && bodyB.gameObject.type === SQUARE_ALIEN) {
-                return;
-            }
+        if(this.scene.scene.key === 'StartScene') {
+            return;
+        }
 
+        const scene = this.scene;
+
+        if(bodyA.gameObject instanceof Alien && bodyB.gameObject instanceof Alien) {
             const player = bodyA.gameObject.type === CIRCLE_ALIEN ? bodyA : bodyB;
             const enemy = bodyA.gameObject.type === CIRCLE_ALIEN ? bodyB : bodyA;
 
-            this.checkCollisionDestroy(player, enemy);
+            const destroyed = this.checkCollisionDestroy(player, enemy);
+            if(destroyed) {
+                scene.sound.play('kill');
+            }
         } else {
             const alien = bodyA.gameObject instanceof Alien ? bodyA : bodyB;
             const other = bodyA.gameObject instanceof Alien ? bodyB : bodyA;
@@ -43,8 +50,13 @@ class Alien extends Phaser.Physics.Matter.Sprite {
                 if(isPlayer) {
                     this.checkCollisionDestroy(alien, other);
                 } else {
-                    this.checkCollisionDestroy(other, alien);
+                    const destroyed = this.checkCollisionDestroy(other, alien);
+                    if(destroyed) {
+                        scene.sound.play('kill');
+                    }
                 }
+            } else if(isPlayer) {
+                scene.sound.play('bounce');
             }
         }
     }
@@ -55,7 +67,9 @@ class Alien extends Phaser.Physics.Matter.Sprite {
 
         if(sumVel > 5) {
             other.gameObject.destroy();
+            return true;
         }
+        return false;
     }
 }
 
