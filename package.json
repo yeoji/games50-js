@@ -17,6 +17,10 @@
       {
         "staticPath": "legend-of-50/assets",
         "staticOutDir": "legend-of-50/assets"
+      },
+      {
+        "staticPath": "angry-50/assets",
+        "staticOutDir": "angry-50/assets"
       }
     ]
   },
