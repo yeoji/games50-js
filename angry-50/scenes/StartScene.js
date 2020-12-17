@@ -15,27 +15,31 @@ class StartScene extends Phaser.Scene {
             frameWidth: 35,
             frameHeight: 35
         });
+        this.load.spritesheet("tiles", "assets/graphics/tiles.png", {
+            frameWidth: 35,
+            frameHeight: 35
+        });
 
         loadFont("font", "assets/fonts/font.ttf");
     }
 
     create() {
-        this.matter.world.setBounds(-17.5, -17.5, this.game.config.width, this.game.config.height);
+        this.matter.world.setBounds(0, 0, this.game.config.width, this.game.config.height);
 
         renderBackground(this);
 
         this.drawAliens();
         this.drawTitle();
 
-        this.input.keyboard.on('keydown-ENTER', () => {
+        this.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
             this.scene.start('PlayScene');
-        });
+        })
     }
 
     drawAliens() {
         this.aliens = [];
         for (let i = 0; i < 100; i++) {
-            this.aliens.push(new Alien(this, Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height - 35)).setOrigin(0,0));
+            this.aliens.push(new Alien(this, Phaser.Math.Between(0, this.game.config.width), Phaser.Math.Between(0, this.game.config.height - 35)));
         }
     }
 
