@@ -1,4 +1,7 @@
 import Phaser from 'phaser';
+import SceneStack from '../common/SceneStack';
+import FadeScene from './scenes/FadeScene';
+import PlayScene from './scenes/PlayScene';
 import StartScene from './scenes/StartScene';
 
 const config = {
@@ -18,7 +21,9 @@ const config = {
             debug: false
         }
     },
-    scene: [StartScene]
+    scene: [StartScene, PlayScene, FadeScene]
 };
 
 const game = new Phaser.Game(config);
+
+export const sceneStack = new SceneStack(game.scene, ['StartScene']);
