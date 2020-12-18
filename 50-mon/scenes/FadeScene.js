@@ -11,7 +11,7 @@ class FadeScene extends Phaser.Scene {
         this.opacity = a === 1 ? 0 : 1;
         this.duration = duration;
 
-        this.onComplete = onComplete;
+        this.onComplete = onComplete || function() {};
     }
 
     create() {

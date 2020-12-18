@@ -47,13 +47,17 @@ class StartScene extends Phaser.Scene {
                     sceneStack.pop();
 
                     sceneStack.push('PlayScene');
+                    sceneStack.push('DialogueScene', {
+                        text: `Welcome to the world of 50Mon! To start fighting monsters with your own randomly assigned monster,` + 
+                        ` just walk in the tall grass! If you need to heal, just press 'P' in the field!` +
+                        ` Good luck! (Press Enter to dismiss dialogues)`
+                    });
                     sceneStack.push('FadeScene', {
                         r: 255,
                         g: 255,
                         b: 255,
                         a: 0,
-                        duration: 1000,
-                        onComplete: () => {}
+                        duration: 1000
                     });
                 }
             });
