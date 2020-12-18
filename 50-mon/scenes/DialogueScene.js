@@ -7,15 +7,21 @@ class DialogueScene extends Phaser.Scene {
         super('DialogueScene');
     }
 
-    init({text, onComplete}) {
+    init({x = 0, y = 0, width, height, text, fontSize = 8, onComplete}) {
+        this.x = x;
+        this.y = y;
+        this.width = width || this.game.config.width;
+        this.height = height || 50;
+
         this.text = text;
+        this.fontSize = fontSize;
         this.onComplete = onComplete || function() {}
     }
 
     create() {
         this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
-        this.dialogue = new Textbox(this, 0, 0, this.game.config.width, 50, this.text);
+        this.dialogue = new Textbox(this, this.x, this.y, this.width, this.height, this.text, this.fontSize);
     }
 
     update() {

@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import World from '../objects/World';
 import Player from '../objects/Player';
 import {DOWN, LEFT, RIGHT, UP} from '../constants';
+import { sceneStack } from '../50mon';
 
 class PlayScene extends Phaser.Scene {
     constructor() {
@@ -17,14 +18,56 @@ class PlayScene extends Phaser.Scene {
 
     update() {
         if(this.controls.left.isDown) {
-            this.player.move(LEFT);
+            this.attemptMove(LEFT);
         } else if(this.controls.right.isDown) {
-            this.player.move(RIGHT);
+            this.attemptMove(RIGHT);
         } else if(this.controls.up.isDown) {
-            this.player.move(UP);
+            this.attemptMove(UP);
         } else if(this.controls.down.isDown) {
-            this.player.move(DOWN);
+            this.attemptMove(DOWN);
         }
+    }
+
+    attemptMove(direction) {
+        const encounter = this.checkForEncounters();
+        if(encounter) {
+            sceneStack.push('FadeScene', {
+                r: 255,
+                g: 255,
+                b: 255,
+                a: 1,
+                duration: 1000,
+                onComplete: () => {
+                    sceneStack.push('BattleScene', {
+                        player: this.player
+                    });
+                    sceneStack.push('FadeScene', {
+                        r: 255,
+                        g: 255,
+                        b: 255,
+                        a: 0,
+                        duration: 1000
+                    });
+                }
+            });
+        } else {
+            this.player.move(direction);
+        }
+    }
+
+    checkForEncounters() {
+        for (let i = 0; i < this.world.tallGrass.length; i++) {
+            const tallGrass = this.world.tallGrass[i];
+
+            if(Phaser.Geom.Rectangle.Overlaps(this.player.getBounds(), tallGrass.getBounds())) {
+                const hasEncounter = Phaser.Math.Between(1, 100) === 1;
+                if(hasEncounter) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
 

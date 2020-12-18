@@ -9,6 +9,8 @@ class SceneStack {
         this.sceneManager.pause(this.stack[this.stack.length - 1]);
         this.sceneManager.run(sceneKey, data);
 
+        this.sceneManager.bringToTop(sceneKey);
+
         this.stack.push(sceneKey);
     }
 

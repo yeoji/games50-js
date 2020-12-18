@@ -3,6 +3,7 @@ import {loadFont} from '../../common/utils';
 import Pokemon from '../objects/Pokemon';
 import pokemons from '../data/pokemon.json';
 import { sceneStack } from '../50mon';
+import { POKEMON_ELLIPSE_COLOUR } from '../constants';
 
 class StartScene extends Phaser.Scene {
     constructor() {
@@ -79,10 +80,10 @@ class StartScene extends Phaser.Scene {
     }
 
     drawPokemon() {
-        this.add.ellipse(this.game.config.width/2, this.game.config.height/2 + 32, 148, 42, 0x2db82d, 0.5);
+        this.add.ellipse(this.game.config.width/2, this.game.config.height/2 + 32, 148, 42, POKEMON_ELLIPSE_COLOUR, 0.5);
 
         let randomPokemon = Phaser.Math.RND.pick(pokemons);
-        this.pokemon = new Pokemon(this, this.game.config.width/2, this.game.config.height/2 + 16, randomPokemon.name);
+        this.pokemon = new Pokemon(randomPokemon).createBattleSprite(this, this.game.config.width/2, this.game.config.height/2 + 16);
 
         this.pokemonSlideAnimation = setInterval(() => {
             this.tweens.add({
@@ -93,7 +94,7 @@ class StartScene extends Phaser.Scene {
                     this.pokemon.destroy();
 
                     randomPokemon = Phaser.Math.RND.pick(pokemons);
-                    this.pokemon = new Pokemon(this, this.game.config.width, this.game.config.height/2 + 16, randomPokemon.name);
+                    this.pokemon = new Pokemon(randomPokemon).createBattleSprite(this, this.game.config.width, this.game.config.height/2 + 16);
     
                     this.tweens.add({
                         targets: this.pokemon,

@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import SceneStack from '../common/SceneStack';
+import BattleMenuScene from './scenes/BattleMenuScene';
+import BattleScene from './scenes/BattleScene';
 import DialogueScene from './scenes/DialogueScene';
 import FadeScene from './scenes/FadeScene';
 import PlayScene from './scenes/PlayScene';
@@ -16,7 +18,7 @@ const config = {
         zoom: (1280/384),
         resolution: (1280/384),
     },
-    scene: [StartScene, PlayScene, FadeScene, DialogueScene]
+    scene: [StartScene, PlayScene, FadeScene, DialogueScene, BattleScene, BattleMenuScene]
 };
 
 const game = new Phaser.Game(config);

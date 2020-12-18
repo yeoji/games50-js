@@ -1,10 +1,16 @@
-import Phaser from 'phaser';
+export const FRONT_FACING = 'front';
+export const BACK_FACING = 'back';
 
-class Pokemon extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y, name) {
-        super(scene, x, y, 'pokemon', `${name}-front`.toLowerCase());
+class Pokemon {
+    constructor(attributes, level = 1) {
+        this.attributes = attributes;
+        this.level = level;
+    }
 
-        this.scene.add.existing(this);
+    createBattleSprite(scene, x, y, facing = FRONT_FACING) {
+        const {name} = this.attributes;
+
+        return scene.add.sprite(x, y, 'pokemon', `${name}-${facing}`.toLowerCase());
     }
 }
 

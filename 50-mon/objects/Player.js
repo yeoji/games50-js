@@ -1,7 +1,10 @@
 import Phaser from 'phaser';
 import { TILE_SIZE, DOWN, UP, RIGHT, LEFT } from '../constants';
+import Pokemon from './Pokemon';
+import pokemons from '../data/pokemon.json';
 
 const PLAYER_INITIAL_IDLE_FRAME = 7;
+const PLAYER_POKEMON_LEVEL = 5;
 
 class Player extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y) {
@@ -9,6 +12,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         this.setOrigin(0, 0.5);
         this.createAnimations();
+        this.createRandomParty();
 
         this.moving = false;
 
@@ -36,6 +40,12 @@ class Player extends Phaser.GameObjects.Sprite {
                 repeat: -1
             });
         });
+    }
+
+    createRandomParty() {
+        this.party = [
+            new Pokemon(Phaser.Math.RND.pick(pokemons), PLAYER_POKEMON_LEVEL)
+        ]
     }
 
     move(direction) {
