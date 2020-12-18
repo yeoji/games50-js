@@ -21,6 +21,10 @@
       {
         "staticPath": "angry-50/assets",
         "staticOutDir": "angry-50/assets"
+      },
+      {
+        "staticPath": "50-mon/assets",
+        "staticOutDir": "50-mon/assets"
       }
     ]
   },
