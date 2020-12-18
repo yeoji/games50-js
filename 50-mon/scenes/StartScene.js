@@ -13,6 +13,15 @@ class StartScene extends Phaser.Scene {
         loadFont("font", "assets/fonts/font.ttf");
 
         this.load.atlas('pokemon', 'assets/graphics/pokemon/pokemon.png', 'assets/graphics/pokemon/pokemon.json');
+
+        this.load.spritesheet("tiles", "assets/graphics/tiles.png", {
+            frameWidth: 16,
+            frameHeight: 16,
+        });
+        this.load.spritesheet("entities", "assets/graphics/entities.png", {
+            frameWidth: 16,
+            frameHeight: 16,
+        });
     }
 
     create() {
