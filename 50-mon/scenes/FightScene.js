@@ -151,29 +151,78 @@ class FightScene extends Phaser.Scene {
                     height: 64,
                     fontSize: 16,
                     text: `Victory!`,
-                    onComplete: () => {
-                        sceneStack.push('FadeScene', {
-                            r: 255,
-                            g: 255,
-                            b: 255,
-                            a: 1,
-                            duration: 1000,
-                            onComplete: () => {
-                                // remove fight scene
-                                sceneStack.pop();
-                                // remove battle scene
-                                sceneStack.pop();
+                    onComplete: this.updatePlayerExp
+                });
+            }
+        });
+    }
 
-                                sceneStack.push('FadeScene', {
-                                    r: 255,
-                                    g: 255,
-                                    b: 255,
-                                    a: 0,
-                                    duration: 1000
-                                });
+    updatePlayerExp = () => {
+        const {opponentPokemon, playerPokemon, playerExpBar} = this.battleScene;
+
+        // sum all IVs and multiply by level to get exp amount
+        const exp = (opponentPokemon.attributes.HPIV + opponentPokemon.attributes.attackIV +
+            opponentPokemon.attributes.defenseIV + opponentPokemon.attributes.speedIV) * opponentPokemon.level;
+
+        sceneStack.push('DialogueScene', {
+            y: this.game.config.height - 64,
+            height: 64,
+            fontSize: 16,
+            text: `You earned ${exp} experience points!`,
+            canSkip: false
+        });
+
+        setTimeout(() => {
+            playerExpBar.setValue(Math.min(playerPokemon.currentExp + exp, playerPokemon.expToLevel));
+            playerPokemon.currentExp += exp;
+
+            // TODO this tween is not working
+            sceneStack.getActiveScene().tweens.add({
+                targets: playerExpBar.progress,
+                width: playerExpBar.getProgressWidth(),
+                duration: 500,
+                onComplete: () => {
+                    sceneStack.pop();
+
+                    if(playerPokemon.currentExp >= playerPokemon.expToLevel) {
+                        playerPokemon.levelUp();
+
+                        sceneStack.push('DialogueScene', {
+                            y: this.game.config.height - 64,
+                            height: 64,
+                            fontSize: 16,
+                            text: `Congratulations! Level Up!`,
+                            onComplete: () => {
+                                this.fadeOutWhite();
                             }
                         });
+                    } else {
+                        this.fadeOutWhite();
                     }
+                }
+            });
+        }, 1500);
+    }
+
+    fadeOutWhite() {
+        sceneStack.push('FadeScene', {
+            r: 255,
+            g: 255,
+            b: 255,
+            a: 1,
+            duration: 1000,
+            onComplete: () => {
+                // remove fight scene
+                sceneStack.pop();
+                // remove battle scene
+                sceneStack.pop();
+
+                sceneStack.push('FadeScene', {
+                    r: 255,
+                    g: 255,
+                    b: 255,
+                    a: 0,
+                    duration: 1000
                 });
             }
         });

@@ -16,12 +16,21 @@ class Pokemon {
         this.calculateStats();
 
         this.currentHP = this.HP;
+        this.currentExp = 0;
+        this.expToLevel = this.level * this.level * 5 * 0.75;
     }
 
     calculateStats() {
         for (let i = 0; i < this.level; i++) {
             this.levelUpStats();
         }
+    }
+
+    levelUp() {
+        this.level++;
+        this.currentExp -= this.expToLevel;
+        
+        return this.levelUpStats();
     }
 
     /**
