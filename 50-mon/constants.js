@@ -12,3 +12,23 @@ export const LEFT = 'left';
 export const RIGHT = 'right';
 export const UP = 'up';
 export const DOWN = 'down';
+
+/**
+ * Font constants
+ */
+
+export const LARGE_FONT = {
+    fontFamily: 'font',
+    fontSize: 32,
+    resolution: 3
+}
+export const MEDIUM_FONT = {
+    fontFamily: 'font',
+    fontSize: 16,
+    resolution: 3
+}
+export const SMALL_FONT = {
+    fontFamily: 'font',
+    fontSize: 8,
+    resolution: 3
+}

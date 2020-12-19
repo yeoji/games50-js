@@ -56,8 +56,9 @@ class PlayScene extends Phaser.Scene {
             });
         } else {
             this.player.move(direction);
-            this.controls[direction].isDown = false;
         }
+        
+        this.controls[direction].isDown = false;
     }
 
     checkForEncounters() {

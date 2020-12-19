@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { MEDIUM_FONT } from '../constants';
 
 const CURSOR_WIDTH = 14;
 
@@ -32,11 +33,7 @@ class Selection extends Phaser.GameObjects.Container {
         this.selections = this.items.map((item, i) => {
             paddedY = paddedY + (this.gapHeight * i);
             
-            return this.scene.add.text(this.x, paddedY, item.text, {
-                fontFamily: 'font',
-                fontSize: 16,
-                fill: 'rgba(255, 255, 255, 1)',
-            }).setOrigin(0, 0);
+            return this.scene.add.text(this.x, paddedY, item.text, MEDIUM_FONT).setFill('rgba(255, 255, 255, 1)').setOrigin(0, 0);
         });
     }
 

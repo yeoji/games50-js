@@ -3,7 +3,7 @@ import {loadFont} from '../../common/utils';
 import Pokemon from '../objects/Pokemon';
 import pokemons from '../data/pokemon.json';
 import { sceneStack } from '../50mon';
-import { POKEMON_ELLIPSE_COLOUR } from '../constants';
+import { LARGE_FONT, MEDIUM_FONT, POKEMON_ELLIPSE_COLOUR } from '../constants';
 
 class StartScene extends Phaser.Scene {
     constructor() {
@@ -68,17 +68,9 @@ class StartScene extends Phaser.Scene {
     }
 
     drawTitle() {
-        this.add.text(this.game.config.width/2, this.game.config.height/2 - 72, "50-Mon!", {
-            fontFamily: 'font',
-            fill: 'rgba(24, 24, 24, 1)',
-            fontSize: 32
-        }).setOrigin(0.5, 0.5);
+        this.add.text(this.game.config.width/2, this.game.config.height/2 - 72, "50-Mon!", LARGE_FONT).setFill('rgba(24, 24, 24, 1)').setOrigin(0.5, 0.5);
 
-        this.add.text(this.game.config.width/2, this.game.config.height/2 + 68, "Press Enter", {
-            fontFamily: 'font',
-            fill: 'rgba(24, 24, 24, 1)',
-            fontSize: 16
-        }).setOrigin(0.5, 0.5);
+        this.add.text(this.game.config.width/2, this.game.config.height/2 + 68, "Press Enter", MEDIUM_FONT).setFill('rgba(24, 24, 24, 1)').setOrigin(0.5, 0.5);
     }
 
     drawPokemon() {

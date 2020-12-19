@@ -7,12 +7,20 @@ class BattleMenuScene extends Phaser.Scene {
         super('BattleMenuScene');
     }
 
+    init({battleScene}) {
+        this.battleScene = battleScene;
+    }
+
     create() {
         this.menu = new Menu(this, this.game.config.width - 64, this.game.config.height - 64, 64, 64, [
             {
                 text: 'Fight',
                 onSelect: () => {
-                    console.log('fight selected')
+                    sceneStack.pop();
+
+                    sceneStack.push('FightScene', {
+                        battleScene: this.battleScene
+                    });
                 }
             },
             {

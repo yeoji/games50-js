@@ -7,7 +7,7 @@ class DialogueScene extends Phaser.Scene {
         super('DialogueScene');
     }
 
-    init({x = 0, y = 0, width, height, text, fontSize = 8, onComplete}) {
+    init({x = 0, y = 0, width, height, text, fontSize = 8, canSkip = true, onComplete}) {
         this.x = x;
         this.y = y;
         this.width = width || this.game.config.width;
@@ -15,6 +15,8 @@ class DialogueScene extends Phaser.Scene {
 
         this.text = text;
         this.fontSize = fontSize;
+
+        this.canSkip = canSkip;
         this.onComplete = onComplete || function() {}
     }
 
@@ -25,7 +27,7 @@ class DialogueScene extends Phaser.Scene {
     }
 
     update() {
-        if(Phaser.Input.Keyboard.JustDown(this.enterKey)) {
+        if(this.canSkip && Phaser.Input.Keyboard.JustDown(this.enterKey)) {
             if(this.dialogue.ended) {
                 this.dialogue.close();
 

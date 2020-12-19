@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import Pokemon, { BACK_FACING } from '../objects/Pokemon';
 import pokemons from '../data/pokemon.json';
-import { EXP_BAR_COLOUR, HEALTH_BAR_COLOUR, POKEMON_ELLIPSE_COLOUR } from '../constants';
+import { EXP_BAR_COLOUR, HEALTH_BAR_COLOUR, POKEMON_ELLIPSE_COLOUR, SMALL_FONT } from '../constants';
 import { sceneStack } from '../50mon';
 import Panel from '../gui/Panel';
 import ProgressBar from '../gui/ProgressBar';
@@ -45,21 +45,12 @@ class BattleScene extends Phaser.Scene {
     }
 
     drawPokemonInfo() {
-        this.opponentHealthBar = new ProgressBar(this, 8, 8, 152, 6, HEALTH_BAR_COLOUR, 100, 100);
-        this.opponentLevel = this.add.text(this.opponentHealthBar.x, this.opponentHealthBar.y + 8, `LV ${this.opponentPokemon.level}`, {
-            fontFamily: 'font',
-            fontSize: 8,
-            fill: 'rgba(0, 0, 0, 1)',
-        });
+        this.opponentHealthBar = new ProgressBar(this, 8, 8, 152, 6, HEALTH_BAR_COLOUR, this.opponentPokemon.currentHP, this.opponentPokemon.HP);
+        this.opponentLevel = this.add.text(this.opponentHealthBar.x, this.opponentHealthBar.y + 8, `LV ${this.opponentPokemon.level}`, SMALL_FONT).setFill('rgba(0, 0, 0, 1)');
 
-        this.playerHealthBar = new ProgressBar(this, this.game.config.width - 160, this.game.config.height - 80, 152, 6, HEALTH_BAR_COLOUR, 100, 100);
+        this.playerHealthBar = new ProgressBar(this, this.game.config.width - 160, this.game.config.height - 80, 152, 6, HEALTH_BAR_COLOUR, this.playerPokemon.currentHP, this.playerPokemon.HP);
         this.playerExpBar = new ProgressBar(this, this.game.config.width - 160, this.game.config.height - 73, 152, 6, EXP_BAR_COLOUR, 0, 100);
-        this.playerLevel = this.add.text(this.playerHealthBar.x, this.playerHealthBar.y - 12, `LV ${this.playerPokemon.level}`, {
-            fontFamily: 'font',
-            fontSize: 8,
-            fill: 'rgba(0, 0, 0, 1)',
-        });
-        
+        this.playerLevel = this.add.text(this.playerHealthBar.x, this.playerHealthBar.y - 12, `LV ${this.playerPokemon.level}`, SMALL_FONT).setFill('rgba(0, 0, 0, 1)');
     }
 
     triggerSlideIn() {
@@ -105,7 +96,9 @@ class BattleScene extends Phaser.Scene {
                     fontSize: 16,
                     text: `Go ${this.playerPokemon.attributes.name}!`,
                     onComplete: () => {
-                        sceneStack.push('BattleMenuScene');
+                        sceneStack.push('BattleMenuScene', {
+                            battleScene: this
+                        });
                     }
                 })
             }

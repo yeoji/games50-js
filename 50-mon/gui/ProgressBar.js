@@ -18,13 +18,23 @@ class ProgressBar extends Phaser.GameObjects.Container {
 
     create() {
         if(this.value > 0) {
-            this.progress = this.scene.add.graphics().fillStyle(this.colour).fillRoundedRect(this.x, this.y, this.getProgressWidth(), this.height, 3);
+            this.progress = this.scene.add.rectangle(this.x, this.y, this.getProgressWidth(), this.height, this.colour).setOrigin(0, 0);
         }
         this.outline = this.scene.add.graphics().lineStyle(2, 0x000000).strokeRoundedRect(this.x, this.y, this.width, this.height, 3);
     }
 
     getProgressWidth() {
         return this.width * (this.value / this.max);
+    }
+
+    getProgressScale() {
+        return (this.value/this.max);
+    }
+
+    setValue(value) {
+        if(value >= 0 && value <= this.max) {
+            this.value = value;
+        }
     }
 }
 

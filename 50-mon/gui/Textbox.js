@@ -10,7 +10,8 @@ class Textbox extends Phaser.GameObjects.Container {
         this.panel = new Panel(scene, x, y, width, height);
         this.text = this.scene.add.text(x + 4, y + 4, text, {
             fontFamily: 'font',
-            fontSize: fontSize
+            fontSize: fontSize,
+            resolution: 3
         }).setWordWrapWidth(this.scene.game.config.width  - 8).setVisible(false);
 
         this.textWrapped = this.text.getWrappedText();

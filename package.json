@@ -31,6 +31,9 @@
   "externals": {
     "assets/**/*": false
   },
+  "browserslist": [
+    "since 2017-06"
+  ],
   "dependencies": {
     "phaser": "3.24.1"
   },

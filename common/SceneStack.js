@@ -20,6 +20,11 @@ class SceneStack {
 
         this.sceneManager.resume(this.stack[this.stack.length - 1]);
     }
+
+    getActiveScene() {
+        const currentScene = this.stack[this.stack.length - 1];
+        return this.sceneManager.getScene(currentScene);
+    }
 }
 
 export default SceneStack;
