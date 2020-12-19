@@ -29,6 +29,10 @@ class PlayScene extends Phaser.Scene {
     }
 
     attemptMove(direction) {
+        if(this.player.moving) {
+            return;
+        }
+        
         const encounter = this.checkForEncounters();
         if(encounter) {
             sceneStack.push('FadeScene', {
@@ -52,6 +56,7 @@ class PlayScene extends Phaser.Scene {
             });
         } else {
             this.player.move(direction);
+            this.controls[direction].isDown = false;
         }
     }
 
@@ -60,7 +65,7 @@ class PlayScene extends Phaser.Scene {
             const tallGrass = this.world.tallGrass[i];
 
             if(Phaser.Geom.Rectangle.Overlaps(this.player.getBounds(), tallGrass.getBounds())) {
-                const hasEncounter = Phaser.Math.Between(1, 100) === 1;
+                const hasEncounter = Phaser.Math.Between(1, 10) === 1;
                 if(hasEncounter) {
                     return true;
                 }

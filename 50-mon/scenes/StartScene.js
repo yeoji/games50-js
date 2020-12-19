@@ -23,6 +23,8 @@ class StartScene extends Phaser.Scene {
             frameWidth: 16,
             frameHeight: 16,
         });
+
+        this.load.image('cursor', 'assets/graphics/cursor.png');
     }
 
     create() {

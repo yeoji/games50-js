@@ -71,7 +71,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         const outOfBoundsX = newPosition.x >= this.scene.game.config.width || newPosition.x < 0;
         const outOfBoundsY = newPosition.y > this.scene.game.config.height || newPosition.y < 0;
-        if(this.moving || outOfBoundsX || outOfBoundsY) {
+        if(outOfBoundsX || outOfBoundsY) {
             return;
         }
 
