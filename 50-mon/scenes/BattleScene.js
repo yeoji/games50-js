@@ -49,7 +49,7 @@ class BattleScene extends Phaser.Scene {
         this.opponentLevel = this.add.text(this.opponentHealthBar.x, this.opponentHealthBar.y + 8, `LV ${this.opponentPokemon.level}`, SMALL_FONT).setFill('rgba(0, 0, 0, 1)');
 
         this.playerHealthBar = new ProgressBar(this, this.game.config.width - 160, this.game.config.height - 80, 152, 6, HEALTH_BAR_COLOUR, this.playerPokemon.currentHP, this.playerPokemon.HP);
-        this.playerExpBar = new ProgressBar(this, this.game.config.width - 160, this.game.config.height - 73, 152, 6, EXP_BAR_COLOUR, 0, 100);
+        this.playerExpBar = new ProgressBar(this, this.game.config.width - 160, this.game.config.height - 73, 152, 6, EXP_BAR_COLOUR, this.playerPokemon.currentExp, this.playerPokemon.expToLevel);
         this.playerLevel = this.add.text(this.playerHealthBar.x, this.playerHealthBar.y - 12, `LV ${this.playerPokemon.level}`, SMALL_FONT).setFill('rgba(0, 0, 0, 1)');
     }
 

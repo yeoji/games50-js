@@ -176,7 +176,6 @@ class FightScene extends Phaser.Scene {
             playerExpBar.setValue(Math.min(playerPokemon.currentExp + exp, playerPokemon.expToLevel));
             playerPokemon.currentExp += exp;
 
-            // TODO this tween is not working
             sceneStack.getActiveScene().tweens.add({
                 targets: playerExpBar.progress,
                 width: playerExpBar.getProgressWidth(),
@@ -185,23 +184,40 @@ class FightScene extends Phaser.Scene {
                     sceneStack.pop();
 
                     if(playerPokemon.currentExp >= playerPokemon.expToLevel) {
-                        playerPokemon.levelUp();
-
-                        sceneStack.push('DialogueScene', {
-                            y: this.game.config.height - 64,
-                            height: 64,
-                            fontSize: 16,
-                            text: `Congratulations! Level Up!`,
-                            onComplete: () => {
-                                this.fadeOutWhite();
-                            }
-                        });
+                        this.levelUpPokemon();
                     } else {
                         this.fadeOutWhite();
                     }
                 }
             });
         }, 1500);
+    }
+
+    levelUpPokemon() {
+        const {playerPokemon, playerExpBar, playerLevel} = this.battleScene;
+
+        playerPokemon.levelUp();
+
+        sceneStack.push('DialogueScene', {
+            y: this.game.config.height - 64,
+            height: 64,
+            fontSize: 16,
+            text: `Congratulations! Level Up!`,
+            onComplete: () => {
+                this.fadeOutWhite();
+            }
+        });
+
+        playerLevel.setText(`LV ${playerPokemon.level}`);
+
+        playerExpBar.setMax(playerPokemon.expToLevel);
+        playerExpBar.setValue(playerPokemon.currentExp);
+        playerExpBar.progress.width = 0;
+        sceneStack.getActiveScene().tweens.add({
+            targets: playerExpBar.progress,
+            width: playerExpBar.getProgressWidth(),
+            duration: 500
+        });
     }
 
     fadeOutWhite() {

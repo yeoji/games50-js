@@ -22,8 +22,7 @@ class SceneStack {
     }
 
     getActiveScene() {
-        const currentScene = this.stack[this.stack.length - 1];
-        return this.sceneManager.getScene(currentScene);
+        return this.sceneManager.getScenes(true)[0];
     }
 }
 
