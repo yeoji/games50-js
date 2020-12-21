@@ -26,10 +26,14 @@ class Pokemon {
         }
     }
 
+    heal() {
+        this.currentHP = this.HP;
+    }
+
     levelUp() {
         this.level++;
         this.currentExp -= this.expToLevel;
-        
+
         return this.levelUpStats();
     }
 

@@ -123,7 +123,7 @@ class FightScene extends Phaser.Scene {
                                 // remove battle scene
                                 sceneStack.pop();
 
-                                playerPokemon.currentHP = playerPokemon.HP;
+                                playerPokemon.heal();
                                 sceneStack.push('DialogueScene', {
                                     text: 'Your Pokemon has been fully restored; try again!'
                                 });

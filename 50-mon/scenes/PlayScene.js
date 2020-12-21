@@ -11,6 +11,7 @@ class PlayScene extends Phaser.Scene {
 
     create() {
         this.controls = this.input.keyboard.createCursorKeys();
+        this.healKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
         this.world = new World(this);
         this.player = new Player(this, this.game.config.width/2, this.game.config.height/2);
@@ -25,6 +26,14 @@ class PlayScene extends Phaser.Scene {
             this.attemptMove(UP);
         } else if(this.controls.down.isDown) {
             this.attemptMove(DOWN);
+        }
+
+        if(Phaser.Input.Keyboard.JustDown(this.healKey)) {
+            this.player.party.forEach(pokemon => pokemon.heal());
+
+            sceneStack.push('DialogueScene', {
+                text: 'Your Pokemon has been healed!'
+            });
         }
     }
 
