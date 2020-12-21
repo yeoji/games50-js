@@ -19,6 +19,14 @@ class BattleScene extends Phaser.Scene {
     }
 
     create() {
+        this.sound.play('battle-music', {
+            sound: 0.5,
+            loop: true
+        });
+        this.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+            this.sound.stopByKey('battle-music');
+        })
+
         this.background = this.add.rectangle(0, 0, this.game.config.width, this.game.config.height, 0xd6d6d6).setOrigin(0, 0);
         
         this.drawPlayer();

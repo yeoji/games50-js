@@ -61,7 +61,10 @@ class FightScene extends Phaser.Scene {
 
         return new Promise(resolve => {
             setTimeout(async () => {
+                this.sound.play('powerup');
                 await attackerSprite.flashWhite()
+
+                this.sound.play('hit');
                 await defenderSprite.flashOpacity()
     
                 // update health bar of defender
@@ -123,6 +126,11 @@ class FightScene extends Phaser.Scene {
                                 // remove battle scene
                                 sceneStack.pop();
 
+                                this.sound.play('field-music', {
+                                    sound: 0.5,
+                                    loop: true
+                                });
+
                                 playerPokemon.heal();
                                 sceneStack.push('DialogueScene', {
                                     text: 'Your Pokemon has been fully restored; try again!'
@@ -151,6 +159,12 @@ class FightScene extends Phaser.Scene {
             y: this.game.config.height,
             duration: 200,
             onComplete: () => {
+                this.sound.stopByKey('battle-music');
+                this.sound.play('victory-music', {
+                    sound: 0.5,
+                    loop: true
+                });
+
                 sceneStack.push('DialogueScene', {
                     y: this.game.config.height - 64,
                     height: 64,
@@ -166,7 +180,8 @@ class FightScene extends Phaser.Scene {
         const {opponentPokemon, playerPokemon, playerExpBar} = this.battleScene;
 
         // sum all IVs and multiply by level to get exp amount
-        const exp = 100;
+        const exp = (opponentPokemon.attributes.HPIV + opponentPokemon.attributes.attackIV +
+            opponentPokemon.attributes.defenseIV + opponentPokemon.attributes.speedIV) * opponentPokemon.level;
 
         sceneStack.push('DialogueScene', {
             y: this.game.config.height - 64,
@@ -177,6 +192,8 @@ class FightScene extends Phaser.Scene {
         });
 
         setTimeout(() => {
+            this.sound.play('exp');
+
             playerExpBar.setValue(Math.min(playerPokemon.currentExp + exp, playerPokemon.expToLevel));
             playerPokemon.currentExp += exp;
 
@@ -201,6 +218,8 @@ class FightScene extends Phaser.Scene {
         const {playerPokemon, playerExpBar, playerLevel, playerHealthBar} = this.battleScene;
 
         const [hpIncrease, attackIncrease, defenseIncrease, speedIncrease] = playerPokemon.levelUp();
+
+        this.sound.play('levelup');
 
         sceneStack.push('DialogueScene', {
             y: this.game.config.height - 64,
@@ -257,6 +276,12 @@ class FightScene extends Phaser.Scene {
             a: 1,
             duration: 1000,
             onComplete: () => {
+                this.sound.stopByKey('victory-music');
+                this.sound.play('field-music', {
+                    sound: 0.5,
+                    loop: true
+                });
+                
                 // remove fight scene
                 sceneStack.pop();
                 // remove battle scene

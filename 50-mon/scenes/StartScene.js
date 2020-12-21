@@ -25,9 +25,30 @@ class StartScene extends Phaser.Scene {
         });
 
         this.load.image('cursor', 'assets/graphics/cursor.png');
+
+        this.loadSounds();
+    }
+
+    loadSounds() {
+        this.load.audio("intro-music", "assets/sounds/intro.mp3")
+        this.load.audio("field-music", "assets/sounds/field_music.wav")
+        this.load.audio("battle-music", "assets/sounds/battle_music.mp3")
+        this.load.audio("victory-music", "assets/sounds/victory.wav")
+        this.load.audio("run", "assets/sounds/run.wav")
+        this.load.audio("blip", "assets/sounds/blip.wav")
+        this.load.audio("heal", "assets/sounds/heal.wav")
+        this.load.audio("powerup", "assets/sounds/powerup.wav")
+        this.load.audio("hit", "assets/sounds/hit.wav")
+        this.load.audio("exp", "assets/sounds/exp.wav")
+        this.load.audio("levelup", "assets/sounds/levelup.wav")
     }
 
     create() {
+        this.sound.play('intro-music', {
+            sound: 0.5,
+            loop: true
+        });
+
         this.game.config.backgroundColor.setFromRGB({
             r: 188,
             g: 188,
@@ -47,6 +68,8 @@ class StartScene extends Phaser.Scene {
                 a: 1,
                 duration: 1000,
                 onComplete: () => {
+                    this.sound.stopByKey('intro-music');
+
                     sceneStack.pop();
 
                     sceneStack.push('PlayScene');

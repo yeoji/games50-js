@@ -41,15 +41,18 @@ class Selection extends Phaser.GameObjects.Container {
         this.updateSelectionCursor();
 
         if(Phaser.Input.Keyboard.JustDown(this.selectionKeys.select)) {
+            this.scene.sound.play('blip');
             this.items[this.selectedItem].onSelect();
         }
     }
 
     updateSelectionCursor() {
         if(Phaser.Input.Keyboard.JustDown(this.selectionKeys.down) && this.selectedItem + 1 < this.items.length) {
+            this.scene.sound.play('blip');
             this.selectedItem++;
         }
         if(Phaser.Input.Keyboard.JustDown(this.selectionKeys.up) && this.selectedItem > 0) {
+            this.scene.sound.play('blip');
             this.selectedItem--;
         }
         this.cursor.setY(this.selections[this.selectedItem].y);

@@ -26,6 +26,8 @@ class BattleMenuScene extends Phaser.Scene {
             {
                 text: 'Run',
                 onSelect: () => {
+                    this.sound.play('run');
+
                     sceneStack.pop();
 
                     sceneStack.push('DialogueScene', {
@@ -44,6 +46,11 @@ class BattleMenuScene extends Phaser.Scene {
                             a: 1,
                             duration: 1000,
                             onComplete: () => {
+                                this.sound.play('field-music', {
+                                    sound: 0.5,
+                                    loop: true
+                                });
+
                                 // get rid of fled message
                                 sceneStack.pop();
 

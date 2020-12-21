@@ -10,6 +10,11 @@ class PlayScene extends Phaser.Scene {
     }
 
     create() {
+        this.sound.play('field-music', {
+            sound: 0.5,
+            loop: true
+        });
+
         this.controls = this.input.keyboard.createCursorKeys();
         this.healKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
@@ -29,6 +34,8 @@ class PlayScene extends Phaser.Scene {
         }
 
         if(Phaser.Input.Keyboard.JustDown(this.healKey)) {
+            this.sound.play('heal');
+            
             this.player.party.forEach(pokemon => pokemon.heal());
 
             sceneStack.push('DialogueScene', {
@@ -51,6 +58,8 @@ class PlayScene extends Phaser.Scene {
                 a: 1,
                 duration: 1000,
                 onComplete: () => {
+                    this.sound.stopByKey('field-music');
+
                     sceneStack.push('BattleScene', {
                         player: this.player
                     });
