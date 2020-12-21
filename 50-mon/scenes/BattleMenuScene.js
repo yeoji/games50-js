@@ -32,7 +32,8 @@ class BattleMenuScene extends Phaser.Scene {
                         y: this.game.config.height - 64,
                         height: 64,
                         fontSize: 16,
-                        text: `You fled successfully!`
+                        text: `You fled successfully!`,
+                        canSkip: false
                     });
 
                     setTimeout(() => {

@@ -98,7 +98,7 @@ class FightScene extends Phaser.Scene {
     }
 
     faint() {
-        const {playerSprite} = this.battleScene;
+        const {playerSprite, playerPokemon} = this.battleScene;
 
         sceneStack.getActiveScene().tweens.add({
             targets: playerSprite,
@@ -122,6 +122,11 @@ class FightScene extends Phaser.Scene {
                                 sceneStack.pop();
                                 // remove battle scene
                                 sceneStack.pop();
+
+                                playerPokemon.currentHP = playerPokemon.HP;
+                                sceneStack.push('DialogueScene', {
+                                    text: 'Your Pokemon has been fully restored; try again!'
+                                });
 
                                 sceneStack.push('FadeScene', {
                                     r: 0,
