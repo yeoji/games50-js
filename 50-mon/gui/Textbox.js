@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import Panel from './Panel';
 
-const LINES_TO_DISPLAY = 3;
+const LINES_TO_DISPLAY = 4;
 
 class Textbox extends Phaser.GameObjects.Container {
     constructor(scene, x, y, width, height, text, fontSize = 8) {
@@ -12,7 +12,7 @@ class Textbox extends Phaser.GameObjects.Container {
             fontFamily: 'font',
             fontSize: fontSize,
             resolution: 3
-        }).setWordWrapWidth(this.scene.game.config.width  - 8).setVisible(false);
+        }).setWordWrapWidth(width  - 8).setVisible(false);
 
         this.textWrapped = this.text.getWrappedText();
         this.currentChunk = 0;

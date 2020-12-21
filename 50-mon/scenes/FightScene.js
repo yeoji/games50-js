@@ -166,8 +166,7 @@ class FightScene extends Phaser.Scene {
         const {opponentPokemon, playerPokemon, playerExpBar} = this.battleScene;
 
         // sum all IVs and multiply by level to get exp amount
-        const exp = (opponentPokemon.attributes.HPIV + opponentPokemon.attributes.attackIV +
-            opponentPokemon.attributes.defenseIV + opponentPokemon.attributes.speedIV) * opponentPokemon.level;
+        const exp = 100;
 
         sceneStack.push('DialogueScene', {
             y: this.game.config.height - 64,
@@ -199,17 +198,32 @@ class FightScene extends Phaser.Scene {
     }
 
     levelUpPokemon() {
-        const {playerPokemon, playerExpBar, playerLevel} = this.battleScene;
+        const {playerPokemon, playerExpBar, playerLevel, playerHealthBar} = this.battleScene;
 
-        playerPokemon.levelUp();
+        const [hpIncrease, attackIncrease, defenseIncrease, speedIncrease] = playerPokemon.levelUp();
 
         sceneStack.push('DialogueScene', {
             y: this.game.config.height - 64,
             height: 64,
             fontSize: 16,
             text: `Congratulations! Level Up!`,
-            onComplete: () => {
-                this.fadeOutWhite();
+            onComplete: () =>{
+                sceneStack.push('DialogueScene', {
+                    x: this.game.config.width - 130,
+                    y: 32,
+                    height: 64,
+                    width: 100,
+                    fontSize: 8,
+                    text: [
+                        `HP: ${playerPokemon.HP - hpIncrease} + ${hpIncrease} = ${playerPokemon.HP} `,
+                        `Attack: ${playerPokemon.attack - attackIncrease} + ${attackIncrease} = ${playerPokemon.attack} `,
+                        `Defense: ${playerPokemon.defense - defenseIncrease} + ${defenseIncrease} = ${playerPokemon.defense} `,
+                        `Speed: ${playerPokemon.speed - speedIncrease} + ${speedIncrease} = ${playerPokemon.speed} `
+                    ],
+                    onComplete: () => {
+                        this.fadeOutWhite();
+                    }
+                });
             }
         });
 
@@ -223,6 +237,16 @@ class FightScene extends Phaser.Scene {
             width: playerExpBar.getProgressWidth(),
             duration: 500
         });
+
+        playerPokemon.heal();
+        playerHealthBar.setMax(playerPokemon.HP);
+        playerHealthBar.setValue(playerPokemon.currentHP);
+        sceneStack.getActiveScene().tweens.add({
+            targets: playerHealthBar.progress,
+            width: playerHealthBar.getProgressWidth(),
+            duration: 500
+        });
+
     }
 
     fadeOutWhite() {
